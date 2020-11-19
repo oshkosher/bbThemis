@@ -1,4 +1,4 @@
-#Nov 19th, 2020
+# Nov 19th, 2020
 
 ### Progress
 
@@ -10,7 +10,7 @@ Dan, Ed: keep logs, scripts, progress in github.
 
 Ed: record CMDs with logs
 
-###Action Items:
+### Action Items:
 
 Ishank, Ed: Profile NAMD and WRF cases at 10s of nodes.
 
