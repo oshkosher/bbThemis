@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 
+# File access conflict analysis tool, developed as part of
+# the bbThemis project (https://github.com/bbThemis/bbThemis)
 #
-# 
+# This reads the output of darshan-parser (which decodes Darshan log files)
+# and tracks which processes (aka ranks) read from or wrote to each file
+# accessed by the application.
+#
+# Note: this does not yet do a detailed analysis of the per-call data.
+# If two ranks write to different byte ranges of one file, this tool
+# will think its a conflict and label the accesses MULTIPLE_WO.
+#
+# Ed Karrels, edk@illinois.edu, December 2020
 
 
 import sys
