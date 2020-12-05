@@ -14,7 +14,7 @@
 # Ed Karrels, edk@illinois.edu, December 2020
 
 
-import sys
+import sys, re
 
 help_str = """
   darshan-parser <logfile> | darshan_file_access_summary.py
@@ -33,8 +33,9 @@ help_str = """
   TODOs
    - use DxT (per-call) log data to check timestamps and file ranges for
      conflicts
-   - check data from the STDIO routines (fread/fwrite) and MPIIO routines
-     (e.g. MPI_File_write) for access conflicts
+   - check data from the MPIIO routines (e.g. MPI_File_write) for
+     conflicts
+     
 """
 
 VERBOSE = False
@@ -49,6 +50,10 @@ FIELD_FILE_NAME = 5
 FIELD_MOUNT_POINT = 6
 FIELD_FILE_SYSTEM_TYPE = 7
 FIELD_COUNT = 8
+
+
+# regexp to filter just byte count lines from the POSIX and STDIO sections
+counter_lines_re = re.compile('^(POSIX|STDIO)\t[^\t]*\t[^\t]*\t((STDIO|POSIX)_BYTES_(READ|WRITTEN))\t')
 
 
 def main(args):
@@ -112,18 +117,18 @@ def readDarshanOutput():
   for line in sys.stdin:
     line_no += 1
 
-    # ignore anything that isn't part of the POSIX module
-    if not line.startswith('POSIX\t'): continue
+    # ignore all but POSIX and STDIO byte count lines
+    match = counter_lines_re.search(line)
+    if not match: continue
+
+    counter_name = match.group(2)
+    assert(counter_name.endswith('_BYTES_READ') or
+           counter_name.endswith('_BYTES_WRITTEN'))
 
     # each line should have 8 fields: <module>, <rank>, <record id>, <counter>, <value>, <file name>, <mount pt>, <fs type>
     fields = line.split('\t')
     if len(fields) != FIELD_COUNT:
       print(f'Error line {line_no}: {len(fields)} fields (expected {FIELD_COUNT})')
-      continue
-
-    # ignore everything but # of bytes read or written
-    counter_name = fields[FIELD_COUNTER_NAME]
-    if counter_name not in ['POSIX_BYTES_READ', 'POSIX_BYTES_WRITTEN']:
       continue
 
     # ignore if no bytes read or written
@@ -142,12 +147,11 @@ def readDarshanOutput():
 
     rank = int(fields[FIELD_RANK])
 
-    if counter_name == 'POSIX_BYTES_READ':
+    if counter_name.endswith('_READ'):
       current_file.addReader(rank)
       if VERBOSE:
         print(f'{current_file.filename}: {rank} read {byte_count} bytes')
     else:
-      assert(counter_name == 'POSIX_BYTES_WRITTEN')
       current_file.addWriter(rank)
       if VERBOSE:
         print(f'{current_file.filename}: {rank} wrote {byte_count} bytes')
