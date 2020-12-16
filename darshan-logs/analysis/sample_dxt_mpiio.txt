@@ -1,0 +1,124 @@
+# darshan log version: 3.21
+# compression method: ZLIB
+# exe: ./conflict_app
+# uid: 1000
+# jobid: 178
+# start_time: 1607906702
+# start_time_asci: Sun Dec 13 14:45:02 2020
+# end_time: 1607906703
+# end_time_asci: Sun Dec 13 14:45:03 2020
+# nprocs: 2
+# run time: 2
+# metadata: lib_ver = 3.2.1
+# metadata: h = romio_no_indep_rw=true;cb_nodes=4
+
+# log file regions
+# -------------------------------------------------------
+# header: 360 bytes (uncompressed)
+# job data: 154 bytes (compressed)
+# record table: 124 bytes (compressed)
+# POSIX module: 165 bytes (compressed), ver=4
+# MPI-IO module: 121 bytes (compressed), ver=3
+# STDIO module: 71 bytes (compressed), ver=2
+# DXT_POSIX module: 513 bytes (compressed), ver=1
+# DXT_MPIIO module: 306 bytes (compressed), ver=2
+
+# mounted file systems (mount point and fs type)
+# -------------------------------------------------------
+# mount entry:	/sys/fs/cgroup/unified	cgroup2
+# mount entry:	/mnt/c	9p
+# mount entry:	/init	9p
+# mount entry:	/dev	devtmpfs
+# mount entry:	/	ext4
+
+# ***************************************************
+# DXT_POSIX module data
+# ***************************************************
+
+# DXT, file_id: 13200110357831048887, file_name: /mnt/c/Ed/UI/Research/Darshan/conflict_app.out.WAW.MPIIO.MSG
+# DXT, rank: 0, hostname: XPS13
+# DXT, write_count: 10, read_count: 10
+# DXT, mnt_pt: /mnt/c, fs_type: 9p
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0          524288      1.0243      1.0298
+ X_POSIX       0  write        1          524288          524288      1.0366      1.0426
+ X_POSIX       0  write        2         1048576          524288      1.0482      1.0520
+ X_POSIX       0  write        3         1572864          524288      1.0581      1.0639
+ X_POSIX       0  write        4         2097152          524288      1.0706      1.0774
+ X_POSIX       0  write        5         2621440          524288      1.0845      1.0904
+ X_POSIX       0  write        6         3145728          524288      1.0979      1.1042
+ X_POSIX       0  write        7         3670016          524288      1.1110      1.1168
+ X_POSIX       0  write        8         4194304          524288      1.1235      1.1305
+ X_POSIX       0  write        9         4718592          524288      1.1371      1.1442
+ X_POSIX       0   read        0               0          524288      1.0060      1.0242
+ X_POSIX       0   read        1          524288          524288      1.0308      1.0365
+ X_POSIX       0   read        2         1048576          524288      1.0434      1.0481
+ X_POSIX       0   read        3         1572864          524288      1.0525      1.0580
+ X_POSIX       0   read        4         2097152          524288      1.0647      1.0705
+ X_POSIX       0   read        5         2621440          524288      1.0786      1.0844
+ X_POSIX       0   read        6         3145728          524288      1.0913      1.0978
+ X_POSIX       0   read        7         3670016          524288      1.1051      1.1110
+ X_POSIX       0   read        8         4194304          524288      1.1176      1.1234
+ X_POSIX       0   read        9         4718592          524288      1.1313      1.1370
+
+# DXT, file_id: 13200110357831048887, file_name: /mnt/c/Ed/UI/Research/Darshan/conflict_app.out.WAW.MPIIO.MSG
+# DXT, rank: 1, hostname: XPS13
+# DXT, write_count: 10, read_count: 10
+# DXT, mnt_pt: /mnt/c, fs_type: 9p
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       1  write        0               0          524288      1.1704      1.1747
+ X_POSIX       1  write        1          524288          524288      1.1781      1.1812
+ X_POSIX       1  write        2         1048576          524288      1.1850      1.1885
+ X_POSIX       1  write        3         1572864          524288      1.1919      1.1953
+ X_POSIX       1  write        4         2097152          524288      1.1984      1.2018
+ X_POSIX       1  write        5         2621440          524288      1.2044      1.2071
+ X_POSIX       1  write        6         3145728          524288      1.2099      1.2128
+ X_POSIX       1  write        7         3670016          524288      1.2156      1.2183
+ X_POSIX       1  write        8         4194304          524288      1.2210      1.2237
+ X_POSIX       1  write        9         4718592          524288      1.2261      1.2283
+ X_POSIX       1   read        0               0          524288      1.1460      1.1703
+ X_POSIX       1   read        1          524288          524288      1.1753      1.1780
+ X_POSIX       1   read        2         1048576          524288      1.1816      1.1849
+ X_POSIX       1   read        3         1572864          524288      1.1892      1.1919
+ X_POSIX       1   read        4         2097152          524288      1.1957      1.1984
+ X_POSIX       1   read        5         2621440          524288      1.2021      1.2043
+ X_POSIX       1   read        6         3145728          524288      1.2074      1.2098
+ X_POSIX       1   read        7         3670016          524288      1.2131      1.2155
+ X_POSIX       1   read        8         4194304          524288      1.2187      1.2209
+ X_POSIX       1   read        9         4718592          524288      1.2240      1.2261
+
+# ***************************************************
+# DXT_MPIIO module data
+# ***************************************************
+
+# DXT, file_id: 13200110357831048887, file_name: /mnt/c/Ed/UI/Research/Darshan/conflict_app.out.WAW.MPIIO.MSG
+# DXT, rank: 0, hostname: XPS13
+# DXT, write_count: 10, read_count: 0
+# DXT, mnt_pt: /mnt/c, fs_type: 9p
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       0  write        0               0          524288      1.0053      1.0301
+ X_MPIIO       0  write        1          524288          524288      1.0301      1.0430
+ X_MPIIO       0  write        2         1048576          524288      1.0430      1.0523
+ X_MPIIO       0  write        3         1572864          524288      1.0523      1.0642
+ X_MPIIO       0  write        4         2097152          524288      1.0642      1.0780
+ X_MPIIO       0  write        5         2621440          524288      1.0780      1.0908
+ X_MPIIO       0  write        6         3145728          524288      1.0908      1.1045
+ X_MPIIO       0  write        7         3670016          524288      1.1045      1.1170
+ X_MPIIO       0  write        8         4194304          524288      1.1170      1.1308
+ X_MPIIO       0  write        9         4718592          524288      1.1308      1.1447
+
+# DXT, file_id: 13200110357831048887, file_name: /mnt/c/Ed/UI/Research/Darshan/conflict_app.out.WAW.MPIIO.MSG
+# DXT, rank: 1, hostname: XPS13
+# DXT, write_count: 10, read_count: 0
+# DXT, mnt_pt: /mnt/c, fs_type: 9p
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       1  write        0               0          524288      1.1454      1.1749
+ X_MPIIO       1  write        1          524288          524288      1.1750      1.1814
+ X_MPIIO       1  write        2         1048576          524288      1.1814      1.1889
+ X_MPIIO       1  write        3         1572864          524288      1.1889      1.1956
+ X_MPIIO       1  write        4         2097152          524288      1.1956      1.2019
+ X_MPIIO       1  write        5         2621440          524288      1.2019      1.2073
+ X_MPIIO       1  write        6         3145728          524288      1.2073      1.2129
+ X_MPIIO       1  write        7         3670016          524288      1.2129      1.2185
+ X_MPIIO       1  write        8         4194304          524288      1.2185      1.2238
+ X_MPIIO       1  write        9         4718592          524288      1.2238      1.2285
