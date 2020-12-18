@@ -75,6 +75,7 @@ typedef unordered_map<std::string, unique_ptr<File>> FileTableType;
 int readDarshanDxtInput(istream &in, FileTableType &file_table);
 bool parseEventLine(Event &e, const string &line);
 void writeData(const FileTableType &file_table);
+void scanForConflicts(File *f);
 
 
 int main(int argc, char **argv) {
@@ -83,10 +84,16 @@ int main(int argc, char **argv) {
   // Event a(0, Event::READ, 0, 100, 1.0, 1.25);
   // cout << a.offset << ".." << (a.offset + a.length - 1) << endl;
 
-  ifstream inf("sample_dxt_mpiio.txt");
-  readDarshanDxtInput(/*cin*/ inf, file_table);
+  // ifstream inf("sample_dxt_mpiio.txt");
+  readDarshanDxtInput(cin, file_table);
 
-  writeData(file_table);
+  // writeData(file_table);
+
+  for (auto &file_it : file_table) {
+    File *f = file_it.second.get();
+    scanForConflicts(f);
+  }
+
   
   return 0;
 }
@@ -140,8 +147,7 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table) {
 
     int rank = stoi(re_matches[1]);
 
-    cout << "section rank=" << rank << " id=" << file_id_str << " "
-         << file_name << endl;
+    cout << "reading rank " << rank << " " << file_name << endl;
 
     // read until a blank line at the end of the section or EOF
     bool is_eof = false;
@@ -190,7 +196,7 @@ bool startsWith(const string &s, const char *search_str) {
    5: start time
    6: end time
 */
-static regex io_event_re("^ *(X_MPIIO|X_POSIX) +[0-9]+ +([a-z]+) +[0-9]+ +([0-9]+) +([0-9]+) +([0-9.]+) +([0-9.]+)");
+static regex io_event_re("^ *(X_MPIIO|X_POSIX) +[0-9]+ +([a-z]+) +[0-9]+ +([-0-9]+) +([0-9]+) +([0-9.]+) +([0-9.]+)");
 
 bool parseEventLine(Event &event, const string &line) {
   smatch re_matches;
@@ -252,3 +258,61 @@ void writeData(const FileTableType &file_table) {
   */
 }
 
+
+/* Scan through the events, which are ordered by starting byte offset.
+
+   Maintain a list of events, ordered by ending byte offset, with
+   no more than one per rank, that represents the ranks that have
+   accessed the current byte offset.
+   
+   If an overlapping event from the same rank is found, it is likely
+   an instance of an MPI-IO being implemented with a POSIX call.  The
+   MPI-IO call should be a superset of the POSIX call in byte range,
+   time range, and operation (write > read). If not, report the
+   unexpected situation on stderr.
+*/
+void scanForConflicts(File *f) {
+  // typedef set<const Event*,EventCompareEndOffset> CurrentEventsType;
+  // CurrentEventsType current_events;
+  // CurrentEventsType::iterator cur_it;
+
+  /*
+  File::EventSetType::iterator ev_it;
+  for (ev_it = f->events.begin(); ev_it != f->events.end(); ev_it++) {
+    // cout << ev_it->str() << endl;
+    const Event &e = *ev_it;
+    cout << e.str() << endl;
+  }
+  */
+
+  // Maintain a collection of events that overlap the current byte offset.
+  // vector<Event> state;
+  OverlapSet overlap_set;
+  
+  for (const Event &e : f->events) {
+    // cout << e.str() << endl;
+
+    // throw out events that end before the first block of event e
+    overlap_set.removeOldEvents(Event::blockStart(e.offset));
+
+    // if e overlaps any events and is the same rank, combine
+    // the two.
+    if (overlap_set.mergeEventsSameRank(e)) {
+      continue;
+    }
+    
+    // if e overlaps any events and is a different rank, 
+    // report each overlap
+    overlap_set.reportOverlaps(e);
+
+    // if e doesn't overlap any events, but it is a write and shares a
+    // block with a write, report WAW false sharing
+    overlap_set.reportBlockOverlaps(e);
+
+    // add e to the set of active events
+    overlap_set.addEvent(e);
+    
+  }
+  
+  
+}
