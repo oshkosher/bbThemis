@@ -1,0 +1,1752 @@
+# darshan log version: 3.21
+# compression method: ZLIB
+# exe: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/bin/xmeshfem3D 
+# uid: 853572
+# jobid: 2172550
+# start_time: 1608328864
+# start_time_asci: Fri Dec 18 16:01:04 2020
+# end_time: 1608328899
+# end_time_asci: Fri Dec 18 16:01:39 2020
+# nprocs: 8
+# run time: 36
+# metadata: lib_ver = 3.2.1
+# metadata: h = romio_no_indep_rw=true;cb_nodes=4
+
+# log file regions
+# -------------------------------------------------------
+# header: 360 bytes (uncompressed)
+# job data: 281 bytes (compressed)
+# record table: 532 bytes (compressed)
+# POSIX module: 2192 bytes (compressed), ver=4
+# MPI-IO module: 913 bytes (compressed), ver=3
+# STDIO module: 178 bytes (compressed), ver=2
+# DXT_POSIX module: 14755 bytes (compressed), ver=1
+# DXT_MPIIO module: 4407 bytes (compressed), ver=2
+
+# mounted file systems (mount point and fs type)
+# -------------------------------------------------------
+# mount entry:	/proc/sys/fs/binfmt_misc	autofs
+# mount entry:	/sys/kernel/config	configfs
+# mount entry:	/sys/fs/pstore	pstore
+# mount entry:	/dev/mqueue	mqueue
+# mount entry:	/scratch2	lustre
+# mount entry:	/scratch3	lustre
+# mount entry:	/scratch1	lustre
+# mount entry:	/home1	lustre
+# mount entry:	/admin	nfs
+# mount entry:	/boot	xfs
+# mount entry:	/work	lustre
+# mount entry:	/dev	devtmpfs
+# mount entry:	/tmp	xfs
+# mount entry:	/var	xfs
+# mount entry:	/	rootfs
+# mount entry:	/	xfs
+
+# ***************************************************
+# DXT_POSIX module data
+# ***************************************************
+
+# DXT, file_id: 5332043150047334746, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/OUTPUT_FILES/output_mesher.txt
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 515, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0               2      0.1436      0.1441
+ X_POSIX       0  write        1               2              30      0.1444      0.1444
+ X_POSIX       0  write        2              32              30      0.1444      0.1444
+ X_POSIX       0  write        3              62              30      0.1444      0.1444
+ X_POSIX       0  write        4              92               2      0.1444      0.1445
+ X_POSIX       0  write        5              94              16      0.1445      0.1445
+ X_POSIX       0  write        6             110               2      0.1445      0.1445
+ X_POSIX       0  write        7             112               2      0.3337      0.3337
+ X_POSIX       0  write        8             114              39      0.3337      0.3337
+ X_POSIX       0  write        9             153              47      0.3337      0.3337
+ X_POSIX       0  write       10             200               2      0.3337      0.3337
+ X_POSIX       0  write       11             202              57      0.3337      0.3337
+ X_POSIX       0  write       12             259              58      0.3337      0.3337
+ X_POSIX       0  write       13             317               2      0.3337      0.3338
+ X_POSIX       0  write       14             319              55      0.3338      0.3338
+ X_POSIX       0  write       15             374              56      0.3338      0.3338
+ X_POSIX       0  write       16             430              56      0.3338      0.3338
+ X_POSIX       0  write       17             486              51      0.3338      0.3338
+ X_POSIX       0  write       18             537              61      0.3338      0.3338
+ X_POSIX       0  write       19             598               2      0.3338      0.3338
+ X_POSIX       0  write       20             600              22      0.3338      0.3338
+ X_POSIX       0  write       21             622              22      0.3338      0.3338
+ X_POSIX       0  write       22             644              22      0.3338      0.3338
+ X_POSIX       0  write       23             666               2      0.3338      0.3338
+ X_POSIX       0  write       24             668              64      0.3338      0.3338
+ X_POSIX       0  write       25             732              74      0.3339      0.3339
+ X_POSIX       0  write       26             806               2      0.3339      0.3339
+ X_POSIX       0  write       27             808              16      0.3339      0.3339
+ X_POSIX       0  write       28             824              50      0.3339      0.3339
+ X_POSIX       0  write       29             874              29      0.3339      0.3339
+ X_POSIX       0  write       30             903              36      0.3339      0.3339
+ X_POSIX       0  write       31             939              58      0.3339      0.3339
+ X_POSIX       0  write       32             997              26      0.3339      0.3339
+ X_POSIX       0  write       33            1023              72      0.3339      0.3339
+ X_POSIX       0  write       34            1095               2      0.3339      0.3339
+ X_POSIX       0  write       35            1097              40      0.3339      0.3339
+ X_POSIX       0  write       36            1137              36      0.3339      0.3340
+ X_POSIX       0  write       37            1173              36      0.3340      0.3340
+ X_POSIX       0  write       38            1209              33      0.3340      0.3340
+ X_POSIX       0  write       39            1242              28      0.3340      0.3340
+ X_POSIX       0  write       40            1270              28      0.3340      0.3340
+ X_POSIX       0  write       41            1298              32      0.3340      0.3340
+ X_POSIX       0  write       42            1330               2      0.3340      0.3340
+ X_POSIX       0  write       43            1332              68      0.3341      0.3341
+ X_POSIX       0  write       44            1400               2      0.3341      0.3341
+ X_POSIX       0  write       45            1402              61      0.3341      0.3341
+ X_POSIX       0  write       46            1463              34      0.3346      0.3346
+ X_POSIX       0  write       47            1497               2      0.3346      0.3346
+ X_POSIX       0  write       48            1499               2      0.3746      0.3746
+ X_POSIX       0  write       49            1501              26      0.3746      0.3746
+ X_POSIX       0  write       50            1527              61     16.6767     16.6768
+ X_POSIX       0  write       51            1588               2     17.0181     17.0181
+ X_POSIX       0  write       52            1590              39     17.0181     17.0181
+ X_POSIX       0  write       53            1629               2     17.0181     17.0181
+ X_POSIX       0  write       54            1631              81     17.0603     17.0604
+ X_POSIX       0  write       55            1712               5     17.0604     17.0604
+ X_POSIX       0  write       56            1717               2     17.0604     17.0604
+ X_POSIX       0  write       57            1719               2     17.0667     17.0667
+ X_POSIX       0  write       58            1721              31     17.0667     17.0667
+ X_POSIX       0  write       59            1752               2     17.0667     17.0667
+ X_POSIX       0  write       60            1754               7     17.0667     17.0667
+ X_POSIX       0  write       61            1761              25     17.0667     17.0667
+ X_POSIX       0  write       62            1786              57     17.0667     17.0668
+ X_POSIX       0  write       63            1843               2     17.0668     17.0668
+ X_POSIX       0  write       64            1845              30     17.0668     17.0668
+ X_POSIX       0  write       65            1875              62     17.0668     17.0668
+ X_POSIX       0  write       66            1937               2     17.0668     17.0668
+ X_POSIX       0  write       67            1939               2     17.0668     17.0668
+ X_POSIX       0  write       68            1941              28     17.2641     17.2641
+ X_POSIX       0  write       69            1969              74     17.2641     17.2641
+ X_POSIX       0  write       70            2043              42     17.2641     17.2641
+ X_POSIX       0  write       71            2085               2     17.2641     17.2641
+ X_POSIX       0  write       72            2087              41     17.2641     17.2641
+ X_POSIX       0  write       73            2128              41     17.2641     17.2641
+ X_POSIX       0  write       74            2169              41     17.2642     17.2642
+ X_POSIX       0  write       75            2210              41     17.2642     17.2642
+ X_POSIX       0  write       76            2251              41     17.2642     17.2642
+ X_POSIX       0  write       77            2292              41     17.2642     17.2642
+ X_POSIX       0  write       78            2333              41     17.2642     17.2642
+ X_POSIX       0  write       79            2374              41     17.2642     17.2642
+ X_POSIX       0  write       80            2415              41     17.2642     17.2642
+ X_POSIX       0  write       81            2456              41     17.2642     17.2642
+ X_POSIX       0  write       82            2497              41     17.2642     17.2642
+ X_POSIX       0  write       83            2538              31     17.2642     17.2642
+ X_POSIX       0  write       84            2569               2     17.2642     17.2642
+ X_POSIX       0  write       85            2571              40     17.2642     17.2642
+ X_POSIX       0  write       86            2611               2     17.2642     17.2642
+ X_POSIX       0  write       87            2613              18     17.2642     17.2643
+ X_POSIX       0  write       88            2631              33     17.2643     17.2643
+ X_POSIX       0  write       89            2664              50     17.2643     17.2643
+ X_POSIX       0  write       90            2714               2     17.2643     17.2643
+ X_POSIX       0  write       91            2716              41     17.2643     17.2643
+ X_POSIX       0  write       92            2757              41     17.2643     17.2643
+ X_POSIX       0  write       93            2798               2     17.2643     17.2643
+ X_POSIX       0  write       94            2800               2     17.2708     17.2709
+ X_POSIX       0  write       95            2802              45     17.2709     17.2709
+ X_POSIX       0  write       96            2847              38     17.2709     17.2709
+ X_POSIX       0  write       97            2885              37     17.2709     17.2709
+ X_POSIX       0  write       98            2922              45     17.2709     17.2709
+ X_POSIX       0  write       99            2967               2     17.2709     17.2709
+ X_POSIX       0  write      100            2969               2     17.2773     17.2773
+ X_POSIX       0  write      101            2971              12     17.2773     17.2773
+ X_POSIX       0  write      102            2983               2     17.2891     17.2892
+ X_POSIX       0  write      103            2985              25     17.2892     17.2892
+ X_POSIX       0  write      104            3010               2     17.3442     17.3443
+ X_POSIX       0  write      105            3012              25     17.3443     17.3443
+ X_POSIX       0  write      106            3037               2     17.3889     17.3889
+ X_POSIX       0  write      107            3039              30     17.3889     17.3889
+ X_POSIX       0  write      108            3069              51     17.3890     17.3890
+ X_POSIX       0  write      109            3120              67     17.6888     17.6888
+ X_POSIX       0  write      110            3187              51     17.6888     17.6888
+ X_POSIX       0  write      111            3238              67     17.7745     17.7745
+ X_POSIX       0  write      112            3305              51     17.7745     17.7745
+ X_POSIX       0  write      113            3356              67     17.7749     17.7749
+ X_POSIX       0  write      114            3423              51     17.7749     17.7749
+ X_POSIX       0  write      115            3474              67     17.7796     17.7796
+ X_POSIX       0  write      116            3541              51     17.7796     17.7796
+ X_POSIX       0  write      117            3592              67     17.7931     17.7931
+ X_POSIX       0  write      118            3659              51     17.7931     17.7932
+ X_POSIX       0  write      119            3710              67     17.8367     17.8367
+ X_POSIX       0  write      120            3777              51     17.8367     17.8367
+ X_POSIX       0  write      121            3828              67     17.8602     17.8602
+ X_POSIX       0  write      122            3895              51     17.8602     17.8602
+ X_POSIX       0  write      123            3946              67     17.9071     17.9071
+ X_POSIX       0  write      124            4013              51     17.9071     17.9071
+ X_POSIX       0  write      125            4064              67     17.9521     17.9521
+ X_POSIX       0  write      126            4131              51     17.9521     17.9521
+ X_POSIX       0  write      127            4182              67     18.2913     18.2913
+ X_POSIX       0  write      128            4249               2     18.2913     18.2914
+ X_POSIX       0  write      129            4251               2     18.2914     18.2914
+ X_POSIX       0  write      130            4253              33     18.2914     18.2914
+ X_POSIX       0  write      131            4286               2     18.4609     18.4609
+ X_POSIX       0  write      132            4288              27     18.4609     18.4609
+ X_POSIX       0  write      133            4315               2     18.5061     18.5061
+ X_POSIX       0  write      134            4317              13     18.5061     18.5061
+ X_POSIX       0  write      135            4330               2     18.5065     18.5065
+ X_POSIX       0  write      136            4332              25     18.5065     18.5065
+ X_POSIX       0  write      137            4357               2     18.5457     18.5458
+ X_POSIX       0  write      138            4359              25     18.5458     18.5458
+ X_POSIX       0  write      139            4384               2     18.5490     18.5490
+ X_POSIX       0  write      140            4386              30     18.5490     18.5490
+ X_POSIX       0  write      141            4416              51     18.5490     18.5490
+ X_POSIX       0  write      142            4467              67     21.3772     21.3772
+ X_POSIX       0  write      143            4534              51     21.3773     21.3773
+ X_POSIX       0  write      144            4585              67     22.1805     22.1805
+ X_POSIX       0  write      145            4652              51     22.1805     22.1805
+ X_POSIX       0  write      146            4703              67     22.2653     22.2654
+ X_POSIX       0  write      147            4770              51     22.2654     22.2654
+ X_POSIX       0  write      148            4821              67     23.4665     23.4665
+ X_POSIX       0  write      149            4888              51     23.4665     23.4665
+ X_POSIX       0  write      150            4939              67     25.8989     25.8990
+ X_POSIX       0  write      151            5006              51     25.8990     25.8990
+ X_POSIX       0  write      152            5057              67     26.6305     26.6306
+ X_POSIX       0  write      153            5124              51     26.6306     26.6306
+ X_POSIX       0  write      154            5175              67     26.9974     26.9974
+ X_POSIX       0  write      155            5242              51     26.9974     26.9974
+ X_POSIX       0  write      156            5293              67     27.7373     27.7374
+ X_POSIX       0  write      157            5360              51     27.7374     27.7374
+ X_POSIX       0  write      158            5411              67     28.4803     28.4803
+ X_POSIX       0  write      159            5478              51     28.4803     28.4803
+ X_POSIX       0  write      160            5529              67     33.2862     33.2862
+ X_POSIX       0  write      161            5596               2     33.2862     33.2862
+ X_POSIX       0  write      162            5598               2     33.4952     33.4952
+ X_POSIX       0  write      163            5600              32     33.4952     33.4952
+ X_POSIX       0  write      164            5632               2     33.5005     33.5006
+ X_POSIX       0  write      165            5634              45     33.5006     33.5006
+ X_POSIX       0  write      166            5679               2     33.5903     33.5903
+ X_POSIX       0  write      167            5681              36     33.5903     33.5903
+ X_POSIX       0  write      168            5717              36     33.5903     33.5904
+ X_POSIX       0  write      169            5753              36     33.5904     33.5904
+ X_POSIX       0  write      170            5789              26     33.5904     33.5904
+ X_POSIX       0  write      171            5815               2     33.5904     33.5904
+ X_POSIX       0  write      172            5817              49     33.5904     33.5904
+ X_POSIX       0  write      173            5866              49     33.5904     33.5904
+ X_POSIX       0  write      174            5915              35     33.5904     33.5904
+ X_POSIX       0  write      175            5950               2     33.5904     33.5904
+ X_POSIX       0  write      176            5952              51     33.5904     33.5904
+ X_POSIX       0  write      177            6003              51     33.5904     33.5904
+ X_POSIX       0  write      178            6054               2     33.5904     33.5905
+ X_POSIX       0  write      179            6056              50     33.5905     33.5905
+ X_POSIX       0  write      180            6106              62     33.5905     33.5905
+ X_POSIX       0  write      181            6168              54     33.5905     33.5905
+ X_POSIX       0  write      182            6222               2     33.5905     33.5905
+ X_POSIX       0  write      183            6224              33     33.5905     33.5905
+ X_POSIX       0  write      184            6257              55     33.5905     33.5905
+ X_POSIX       0  write      185            6312              36     33.5905     33.5905
+ X_POSIX       0  write      186            6348               2     33.5905     33.5905
+ X_POSIX       0  write      187            6350               2     33.5905     33.5905
+ X_POSIX       0  write      188            6352              28     33.5905     33.5905
+ X_POSIX       0  write      189            6380               2     33.5922     33.5922
+ X_POSIX       0  write      190            6382              29     33.5922     33.5922
+ X_POSIX       0  write      191            6411               2     33.5922     33.5922
+ X_POSIX       0  write      192            6413              36     33.5922     33.5922
+ X_POSIX       0  write      193            6449               2     33.5922     33.5922
+ X_POSIX       0  write      194            6451              55     33.5922     33.5922
+ X_POSIX       0  write      195            6506              56     33.5922     33.5922
+ X_POSIX       0  write      196            6562              56     33.5922     33.5922
+ X_POSIX       0  write      197            6618              32     33.5922     33.5923
+ X_POSIX       0  write      198            6650              60     33.5923     33.5923
+ X_POSIX       0  write      199            6710               2     33.5923     33.5923
+ X_POSIX       0  write      200            6712              77     33.5923     33.5923
+ X_POSIX       0  write      201            6789               2     33.5923     33.5923
+ X_POSIX       0  write      202            6791               2     33.5923     33.5923
+ X_POSIX       0  write      203            6793              49     33.5923     33.5923
+ X_POSIX       0  write      204            6842               2     33.5923     33.5923
+ X_POSIX       0  write      205            6844               2     33.5923     33.5923
+ X_POSIX       0  write      206            6846              31     33.5923     33.5924
+ X_POSIX       0  write      207            6877               2     33.5939     33.5939
+ X_POSIX       0  write      208            6879              22     33.5939     33.5939
+ X_POSIX       0  write      209            6901              68     33.5941     33.5941
+ X_POSIX       0  write      210            6969              69     33.5941     33.5941
+ X_POSIX       0  write      211            7038               2     33.5941     33.5941
+ X_POSIX       0  write      212            7040              70     33.5941     33.5942
+ X_POSIX       0  write      213            7110              70     33.5942     33.5942
+ X_POSIX       0  write      214            7180               2     33.5942     33.5942
+ X_POSIX       0  write      215            7182              19     33.5951     33.5951
+ X_POSIX       0  write      216            7201              35     33.6354     33.6354
+ X_POSIX       0  write      217            7236              50     33.6356     33.6356
+ X_POSIX       0  write      218            7286              40     33.6356     33.6356
+ X_POSIX       0  write      219            7326               2     33.6356     33.6356
+ X_POSIX       0  write      220            7328              45     33.6399     33.6399
+ X_POSIX       0  write      221            7373              45     33.6399     33.6399
+ X_POSIX       0  write      222            7418              45     33.6399     33.6399
+ X_POSIX       0  write      223            7463              50     33.6464     33.6464
+ X_POSIX       0  write      224            7513               2     33.6464     33.6464
+ X_POSIX       0  write      225            7515               2     33.6465     33.6465
+ X_POSIX       0  write      226            7517              38     33.6465     33.6465
+ X_POSIX       0  write      227            7555               2     33.6465     33.6465
+ X_POSIX       0  write      228            7557              54     33.6465     33.6466
+ X_POSIX       0  write      229            7611               2     33.6466     33.6466
+ X_POSIX       0  write      230            7613              63     33.6466     33.6466
+ X_POSIX       0  write      231            7676              65     33.6466     33.6466
+ X_POSIX       0  write      232            7741               2     33.6466     33.6466
+ X_POSIX       0  write      233            7743               2     33.6466     33.6466
+ X_POSIX       0  write      234            7745              29     33.6466     33.6466
+ X_POSIX       0  write      235            7774              21     33.6466     33.6466
+ X_POSIX       0  write      236            7795               2     33.6466     33.6466
+ X_POSIX       0  write      237            7797              27     33.6466     33.6466
+ X_POSIX       0  write      238            7824              41     33.6573     33.6574
+ X_POSIX       0  write      239            7865               2     33.6601     33.6601
+ X_POSIX       0  write      240            7867              26     33.6601     33.6601
+ X_POSIX       0  write      241            7893              26     33.6601     33.6601
+ X_POSIX       0  write      242            7919              65     33.6604     33.6604
+ X_POSIX       0  write      243            7984              62     34.4227     34.4228
+ X_POSIX       0  write      244            8046              65     34.4378     34.4378
+ X_POSIX       0  write      245            8111              69     34.5570     34.5570
+ X_POSIX       0  write      246            8180               2     34.5655     34.5655
+ X_POSIX       0  write      247            8182              50     34.5656     34.5656
+ X_POSIX       0  write      248            8232              50     34.5656     34.5656
+ X_POSIX       0  write      249            8282               2     34.5715     34.5716
+ X_POSIX       0  write      250            8284              45     34.5716     34.5716
+ X_POSIX       0  write      251            8329              38     34.5716     34.5716
+ X_POSIX       0  write      252            8367              31     34.5716     34.5716
+ X_POSIX       0  write      253            8398              45     34.5716     34.5716
+ X_POSIX       0  write      254            8443               2     34.5716     34.5716
+ X_POSIX       0  write      255            8445               2     34.5720     34.5720
+ X_POSIX       0  write      256            8447              12     34.5720     34.5720
+ X_POSIX       0  write      257            8459               2     34.5720     34.5720
+ X_POSIX       0  write      258            8461              25     34.5720     34.5721
+ X_POSIX       0  write      259            8486               2     34.5730     34.5731
+ X_POSIX       0  write      260            8488              25     34.5731     34.5731
+ X_POSIX       0  write      261            8513               2     34.5734     34.5734
+ X_POSIX       0  write      262            8515              30     34.5734     34.5734
+ X_POSIX       0  write      263            8545              51     34.5734     34.5734
+ X_POSIX       0  write      264            8596              67     34.5745     34.5745
+ X_POSIX       0  write      265            8663              51     34.5745     34.5745
+ X_POSIX       0  write      266            8714              67     34.5763     34.5763
+ X_POSIX       0  write      267            8781               2     34.5763     34.5763
+ X_POSIX       0  write      268            8783               2     34.5763     34.5763
+ X_POSIX       0  write      269            8785              33     34.5764     34.5764
+ X_POSIX       0  write      270            8818               2     34.5854     34.5854
+ X_POSIX       0  write      271            8820              27     34.5854     34.5854
+ X_POSIX       0  write      272            8847               2     34.5902     34.5902
+ X_POSIX       0  write      273            8849              13     34.5902     34.5902
+ X_POSIX       0  write      274            8862               2     34.5902     34.5902
+ X_POSIX       0  write      275            8864              25     34.5902     34.5902
+ X_POSIX       0  write      276            8889               2     34.5917     34.5917
+ X_POSIX       0  write      277            8891              25     34.5917     34.5917
+ X_POSIX       0  write      278            8916               2     34.5919     34.5919
+ X_POSIX       0  write      279            8918              30     34.5919     34.5919
+ X_POSIX       0  write      280            8948              51     34.5919     34.5920
+ X_POSIX       0  write      281            8999              67     34.6162     34.6162
+ X_POSIX       0  write      282            9066              51     34.6162     34.6162
+ X_POSIX       0  write      283            9117              67     34.6606     34.6606
+ X_POSIX       0  write      284            9184               2     34.6606     34.6606
+ X_POSIX       0  write      285            9186               2     34.6685     34.6685
+ X_POSIX       0  write      286            9188              32     34.6685     34.6685
+ X_POSIX       0  write      287            9220               2     34.6687     34.6687
+ X_POSIX       0  write      288            9222              45     34.6687     34.6687
+ X_POSIX       0  write      289            9267               2     34.6751     34.6751
+ X_POSIX       0  write      290            9269              36     34.6751     34.6751
+ X_POSIX       0  write      291            9305              36     34.6751     34.6751
+ X_POSIX       0  write      292            9341              36     34.6751     34.6751
+ X_POSIX       0  write      293            9377              24     34.6751     34.6751
+ X_POSIX       0  write      294            9401               2     34.6751     34.6751
+ X_POSIX       0  write      295            9403              49     34.6751     34.6751
+ X_POSIX       0  write      296            9452              49     34.6751     34.6751
+ X_POSIX       0  write      297            9501              35     34.6751     34.6751
+ X_POSIX       0  write      298            9536               2     34.6751     34.6751
+ X_POSIX       0  write      299            9538              51     34.6751     34.6751
+ X_POSIX       0  write      300            9589              51     34.6751     34.6752
+ X_POSIX       0  write      301            9640               2     34.6752     34.6752
+ X_POSIX       0  write      302            9642              50     34.6752     34.6752
+ X_POSIX       0  write      303            9692              62     34.6752     34.6752
+ X_POSIX       0  write      304            9754              54     34.6752     34.6752
+ X_POSIX       0  write      305            9808               2     34.6752     34.6752
+ X_POSIX       0  write      306            9810              33     34.6752     34.6752
+ X_POSIX       0  write      307            9843              55     34.6752     34.6752
+ X_POSIX       0  write      308            9898              36     34.6752     34.6752
+ X_POSIX       0  write      309            9934               2     34.6752     34.6752
+ X_POSIX       0  write      310            9936               2     34.6752     34.6752
+ X_POSIX       0  write      311            9938              28     34.6752     34.6752
+ X_POSIX       0  write      312            9966               2     34.6754     34.6755
+ X_POSIX       0  write      313            9968              29     34.6755     34.6755
+ X_POSIX       0  write      314            9997               2     34.6755     34.6755
+ X_POSIX       0  write      315            9999              36     34.6755     34.6755
+ X_POSIX       0  write      316           10035               2     34.6755     34.6755
+ X_POSIX       0  write      317           10037              55     34.6755     34.6755
+ X_POSIX       0  write      318           10092              56     34.6755     34.6755
+ X_POSIX       0  write      319           10148              56     34.6755     34.6755
+ X_POSIX       0  write      320           10204              32     34.6755     34.6755
+ X_POSIX       0  write      321           10236              60     34.6755     34.6755
+ X_POSIX       0  write      322           10296               2     34.6755     34.6755
+ X_POSIX       0  write      323           10298              77     34.6755     34.6755
+ X_POSIX       0  write      324           10375               2     34.6755     34.6755
+ X_POSIX       0  write      325           10377               2     34.6755     34.6756
+ X_POSIX       0  write      326           10379              49     34.6756     34.6756
+ X_POSIX       0  write      327           10428               2     34.6756     34.6756
+ X_POSIX       0  write      328           10430               2     34.6756     34.6756
+ X_POSIX       0  write      329           10432              31     34.6756     34.6756
+ X_POSIX       0  write      330           10463               2     34.6757     34.6757
+ X_POSIX       0  write      331           10465              20     34.6757     34.6757
+ X_POSIX       0  write      332           10485              68     34.6758     34.6758
+ X_POSIX       0  write      333           10553              69     34.6758     34.6758
+ X_POSIX       0  write      334           10622               2     34.6758     34.6758
+ X_POSIX       0  write      335           10624              70     34.6758     34.6758
+ X_POSIX       0  write      336           10694              70     34.6758     34.6758
+ X_POSIX       0  write      337           10764               2     34.6758     34.6758
+ X_POSIX       0  write      338           10766              17     34.6759     34.6759
+ X_POSIX       0  write      339           10783              35     34.6786     34.6786
+ X_POSIX       0  write      340           10818              50     34.6787     34.6787
+ X_POSIX       0  write      341           10868              40     34.6787     34.6787
+ X_POSIX       0  write      342           10908               2     34.6787     34.6787
+ X_POSIX       0  write      343           10910              45     34.6788     34.6788
+ X_POSIX       0  write      344           10955              45     34.6788     34.6788
+ X_POSIX       0  write      345           11000              45     34.6788     34.6788
+ X_POSIX       0  write      346           11045              53     34.6789     34.6789
+ X_POSIX       0  write      347           11098               2     34.6789     34.6790
+ X_POSIX       0  write      348           11100               2     34.6790     34.6790
+ X_POSIX       0  write      349           11102              38     34.6790     34.6790
+ X_POSIX       0  write      350           11140              61     34.6790     34.6790
+ X_POSIX       0  write      351           11201              63     34.6790     34.6790
+ X_POSIX       0  write      352           11264               2     34.6790     34.6790
+ X_POSIX       0  write      353           11266               2     34.6790     34.6790
+ X_POSIX       0  write      354           11268              29     34.6790     34.6790
+ X_POSIX       0  write      355           11297              21     34.6790     34.6790
+ X_POSIX       0  write      356           11318               2     34.6790     34.6791
+ X_POSIX       0  write      357           11320              27     34.6791     34.6791
+ X_POSIX       0  write      358           11347               2     34.6800     34.6801
+ X_POSIX       0  write      359           11349              26     34.6801     34.6801
+ X_POSIX       0  write      360           11375              26     34.6801     34.6801
+ X_POSIX       0  write      361           11401              65     34.6802     34.6803
+ X_POSIX       0  write      362           11466              62     34.7626     34.7626
+ X_POSIX       0  write      363           11528              65     34.7707     34.7708
+ X_POSIX       0  write      364           11593              69     34.7950     34.7951
+ X_POSIX       0  write      365           11662               2     34.8016     34.8016
+ X_POSIX       0  write      366           11664              50     34.8016     34.8016
+ X_POSIX       0  write      367           11714              50     34.8016     34.8016
+ X_POSIX       0  write      368           11764               2     34.8019     34.8020
+ X_POSIX       0  write      369           11766              45     34.8020     34.8020
+ X_POSIX       0  write      370           11811              38     34.8020     34.8020
+ X_POSIX       0  write      371           11849              31     34.8020     34.8020
+ X_POSIX       0  write      372           11880              45     34.8020     34.8020
+ X_POSIX       0  write      373           11925               2     34.8020     34.8020
+ X_POSIX       0  write      374           11927               2     34.8020     34.8020
+ X_POSIX       0  write      375           11929              12     34.8020     34.8020
+ X_POSIX       0  write      376           11941               2     34.8021     34.8021
+ X_POSIX       0  write      377           11943              25     34.8021     34.8021
+ X_POSIX       0  write      378           11968               2     34.8022     34.8022
+ X_POSIX       0  write      379           11970              25     34.8022     34.8022
+ X_POSIX       0  write      380           11995               2     34.8023     34.8023
+ X_POSIX       0  write      381           11997              30     34.8023     34.8023
+ X_POSIX       0  write      382           12027              51     34.8024     34.8024
+ X_POSIX       0  write      383           12078              67     34.8026     34.8026
+ X_POSIX       0  write      384           12145               2     34.8026     34.8026
+ X_POSIX       0  write      385           12147               2     34.8026     34.8026
+ X_POSIX       0  write      386           12149              33     34.8026     34.8026
+ X_POSIX       0  write      387           12182               2     34.8029     34.8029
+ X_POSIX       0  write      388           12184              27     34.8029     34.8029
+ X_POSIX       0  write      389           12211               2     34.8089     34.8089
+ X_POSIX       0  write      390           12213              13     34.8089     34.8090
+ X_POSIX       0  write      391           12226               2     34.8090     34.8090
+ X_POSIX       0  write      392           12228              25     34.8090     34.8090
+ X_POSIX       0  write      393           12253               2     34.8091     34.8091
+ X_POSIX       0  write      394           12255              25     34.8091     34.8091
+ X_POSIX       0  write      395           12280               2     34.8092     34.8092
+ X_POSIX       0  write      396           12282              30     34.8092     34.8092
+ X_POSIX       0  write      397           12312              51     34.8092     34.8092
+ X_POSIX       0  write      398           12363              67     34.8127     34.8127
+ X_POSIX       0  write      399           12430               2     34.8127     34.8127
+ X_POSIX       0  write      400           12432               2     34.8127     34.8127
+ X_POSIX       0  write      401           12434              32     34.8127     34.8127
+ X_POSIX       0  write      402           12466               2     34.8128     34.8128
+ X_POSIX       0  write      403           12468              45     34.8128     34.8128
+ X_POSIX       0  write      404           12513               2     34.8131     34.8131
+ X_POSIX       0  write      405           12515              36     34.8131     34.8131
+ X_POSIX       0  write      406           12551              36     34.8131     34.8131
+ X_POSIX       0  write      407           12587              36     34.8131     34.8131
+ X_POSIX       0  write      408           12623              24     34.8131     34.8132
+ X_POSIX       0  write      409           12647               2     34.8132     34.8132
+ X_POSIX       0  write      410           12649              49     34.8132     34.8132
+ X_POSIX       0  write      411           12698              49     34.8132     34.8132
+ X_POSIX       0  write      412           12747              35     34.8132     34.8132
+ X_POSIX       0  write      413           12782               2     34.8132     34.8132
+ X_POSIX       0  write      414           12784              51     34.8132     34.8132
+ X_POSIX       0  write      415           12835              51     34.8132     34.8132
+ X_POSIX       0  write      416           12886               2     34.8132     34.8132
+ X_POSIX       0  write      417           12888              50     34.8132     34.8132
+ X_POSIX       0  write      418           12938              62     34.8132     34.8132
+ X_POSIX       0  write      419           13000              54     34.8132     34.8132
+ X_POSIX       0  write      420           13054               2     34.8132     34.8133
+ X_POSIX       0  write      421           13056              33     34.8133     34.8133
+ X_POSIX       0  write      422           13089              55     34.8133     34.8133
+ X_POSIX       0  write      423           13144              36     34.8133     34.8133
+ X_POSIX       0  write      424           13180               2     34.8133     34.8133
+ X_POSIX       0  write      425           13182               2     34.8133     34.8133
+ X_POSIX       0  write      426           13184              28     34.8133     34.8133
+ X_POSIX       0  write      427           13212               2     34.8133     34.8133
+ X_POSIX       0  write      428           13214              29     34.8134     34.8134
+ X_POSIX       0  write      429           13243               2     34.8134     34.8134
+ X_POSIX       0  write      430           13245              36     34.8134     34.8134
+ X_POSIX       0  write      431           13281               2     34.8134     34.8134
+ X_POSIX       0  write      432           13283              55     34.8134     34.8134
+ X_POSIX       0  write      433           13338              56     34.8134     34.8134
+ X_POSIX       0  write      434           13394              56     34.8134     34.8134
+ X_POSIX       0  write      435           13450              32     34.8134     34.8134
+ X_POSIX       0  write      436           13482              60     34.8134     34.8135
+ X_POSIX       0  write      437           13542               2     34.8135     34.8135
+ X_POSIX       0  write      438           13544              77     34.8135     34.8135
+ X_POSIX       0  write      439           13621               2     34.8135     34.8135
+ X_POSIX       0  write      440           13623               2     34.8135     34.8135
+ X_POSIX       0  write      441           13625              49     34.8135     34.8135
+ X_POSIX       0  write      442           13674               2     34.8135     34.8135
+ X_POSIX       0  write      443           13676               2     34.8135     34.8135
+ X_POSIX       0  write      444           13678              31     34.8135     34.8135
+ X_POSIX       0  write      445           13709               2     34.8135     34.8135
+ X_POSIX       0  write      446           13711              20     34.8135     34.8136
+ X_POSIX       0  write      447           13731              68     34.8136     34.8136
+ X_POSIX       0  write      448           13799              69     34.8136     34.8136
+ X_POSIX       0  write      449           13868               2     34.8136     34.8136
+ X_POSIX       0  write      450           13870              70     34.8136     34.8136
+ X_POSIX       0  write      451           13940              70     34.8136     34.8136
+ X_POSIX       0  write      452           14010               2     34.8136     34.8136
+ X_POSIX       0  write      453           14012              17     34.8136     34.8137
+ X_POSIX       0  write      454           14029              35     34.8138     34.8138
+ X_POSIX       0  write      455           14064              50     34.8138     34.8139
+ X_POSIX       0  write      456           14114              40     34.8139     34.8139
+ X_POSIX       0  write      457           14154               2     34.8139     34.8139
+ X_POSIX       0  write      458           14156              45     34.8139     34.8139
+ X_POSIX       0  write      459           14201              45     34.8139     34.8139
+ X_POSIX       0  write      460           14246              45     34.8139     34.8139
+ X_POSIX       0  write      461           14291              53     34.8140     34.8140
+ X_POSIX       0  write      462           14344               2     34.8140     34.8140
+ X_POSIX       0  write      463           14346               2     34.8140     34.8140
+ X_POSIX       0  write      464           14348              38     34.8140     34.8140
+ X_POSIX       0  write      465           14386              61     34.8140     34.8140
+ X_POSIX       0  write      466           14447              63     34.8140     34.8141
+ X_POSIX       0  write      467           14510               2     34.8141     34.8141
+ X_POSIX       0  write      468           14512               2     34.8141     34.8141
+ X_POSIX       0  write      469           14514              29     34.8141     34.8141
+ X_POSIX       0  write      470           14543              21     34.8141     34.8141
+ X_POSIX       0  write      471           14564               2     34.8141     34.8141
+ X_POSIX       0  write      472           14566              27     34.8141     34.8141
+ X_POSIX       0  write      473           14593               2     34.8142     34.8142
+ X_POSIX       0  write      474           14595              26     34.8142     34.8142
+ X_POSIX       0  write      475           14621              26     34.8142     34.8142
+ X_POSIX       0  write      476           14647              65     34.8144     34.8144
+ X_POSIX       0  write      477           14712              62     34.8242     34.8242
+ X_POSIX       0  write      478           14774              65     34.8302     34.8302
+ X_POSIX       0  write      479           14839              69     34.8358     34.8358
+ X_POSIX       0  write      480           14908               2     34.8441     34.8441
+ X_POSIX       0  write      481           14910              50     34.8441     34.8442
+ X_POSIX       0  write      482           14960              50     34.8442     34.8442
+ X_POSIX       0  write      483           15010               2     34.8442     34.8442
+ X_POSIX       0  write      484           15012              45     34.8442     34.8442
+ X_POSIX       0  write      485           15057               2     34.8442     34.8442
+ X_POSIX       0  write      486           15059              37     34.8442     34.8442
+ X_POSIX       0  write      487           15096              36     34.8442     34.8443
+ X_POSIX       0  write      488           15132               2     34.8443     34.8443
+ X_POSIX       0  write      489           15134              54     34.8443     34.8443
+ X_POSIX       0  write      490           15188               2     34.8443     34.8443
+ X_POSIX       0  write      491           15190              41     34.8443     34.8443
+ X_POSIX       0  write      492           15231              35     34.8443     34.8443
+ X_POSIX       0  write      493           15266              35     34.8443     34.8443
+ X_POSIX       0  write      494           15301               2     34.8443     34.8443
+ X_POSIX       0  write      495           15303              81     34.8443     34.8443
+ X_POSIX       0  write      496           15384               3     34.8443     34.8443
+ X_POSIX       0  write      497           15387               2     34.8443     34.8443
+ X_POSIX       0  write      498           15389              38     34.8443     34.8443
+ X_POSIX       0  write      499           15427               2     34.8444     34.8444
+ X_POSIX       0  write      500           15429               2     34.8444     34.8444
+ X_POSIX       0  write      501           15431              58     34.8444     34.8444
+ X_POSIX       0  write      502           15489               2     34.8444     34.8444
+ X_POSIX       0  write      503           15491              45     34.8444     34.8444
+ X_POSIX       0  write      504           15536               2     34.8444     34.8444
+ X_POSIX       0  write      505           15538              75     34.8444     34.8444
+ X_POSIX       0  write      506           15613              16     34.8444     34.8445
+ X_POSIX       0  write      507           15629               2     34.8445     34.8445
+ X_POSIX       0  write      508           15631               2     34.8477     34.8477
+ X_POSIX       0  write      509           15633              68     34.8478     34.8478
+ X_POSIX       0  write      510           15701              25     34.8478     34.8478
+ X_POSIX       0  write      511           15726              85     34.8478     34.8478
+ X_POSIX       0  write      512           15811               2     34.8478     34.8478
+ X_POSIX       0  write      513           15813              24     34.8478     34.8478
+ X_POSIX       0  write      514           15837               2     34.8478     34.8478
+
+# DXT, file_id: 15920181672442173319, file_name: <STDOUT>
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 8, read_count: 0
+# DXT, mnt_pt: UNKNOWN, fs_type: UNKNOWN
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0               2      0.2101      0.2101
+ X_POSIX       0  write        1               2              16      0.2101      0.2101
+ X_POSIX       0  write        2              18              16      0.2101      0.2101
+ X_POSIX       0  write        3              34              81      0.2101      0.2101
+ X_POSIX       0  write        4             115              35      0.2101      0.2101
+ X_POSIX       0  write        5             150              16      0.2101      0.2101
+ X_POSIX       0  write        6             166              16      0.2101      0.2101
+ X_POSIX       0  write        7             182               2      0.2101      0.2101
+
+# DXT, file_id: 18128357553358766510, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATA/CMTSOLUTION
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 0, read_count: 3
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0   read        0               0             370      0.2159      0.2159
+ X_POSIX       0   read        1             370               0      0.2159      0.2159
+ X_POSIX       0   read        2             370               0      0.2222      0.2222
+
+# DXT, file_id: 4817170743875084417, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/OUTPUT_FILES/addressing.txt
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 8, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0              49      0.3346      0.3350
+ X_POSIX       0  write        1              49              49      0.3353      0.3353
+ X_POSIX       0  write        2              98              49      0.3353      0.3353
+ X_POSIX       0  write        3             147              49      0.3353      0.3353
+ X_POSIX       0  write        4             196              49      0.3353      0.3353
+ X_POSIX       0  write        5             245              49      0.3353      0.3354
+ X_POSIX       0  write        6             294              49      0.3354      0.3354
+ X_POSIX       0  write        7             343              49      0.3354      0.3354
+
+# DXT, file_id: 1754743406936876959, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/proc000000_reg1_topo.bin
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 17, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0               4     16.6791     16.6796
+ X_POSIX       0  write        1               4         4194304     16.6796     16.6831
+ X_POSIX       0  write        2         4194308         4194304     16.6831     16.6865
+ X_POSIX       0  write        3         8388612         4194304     16.6865     16.6899
+ X_POSIX       0  write        4        12582916         4194304     16.6899     16.6933
+ X_POSIX       0  write        5        16777220         4194304     16.6933     16.6973
+ X_POSIX       0  write        6        20971524         4194304     16.6973     16.7009
+ X_POSIX       0  write        7        25165828         4194304     16.7009     16.7043
+ X_POSIX       0  write        8        29360132         4194304     16.7043     16.7077
+ X_POSIX       0  write        9        33554436         4194304     16.7077     16.7118
+ X_POSIX       0  write       10        37748740         4194304     16.7118     16.7153
+ X_POSIX       0  write       11        41943044         4194304     16.7153     16.7187
+ X_POSIX       0  write       12        46137348         4194304     16.7187     16.7221
+ X_POSIX       0  write       13        50331652         4194304     16.7221     16.7260
+ X_POSIX       0  write       14        54525956         3794048     16.7260     16.7292
+ X_POSIX       0  write       15        58320004               4     16.7293     16.7293
+ X_POSIX       0  write       16               0               4     16.7293     16.7330
+
+# DXT, file_id: 349301200717624589, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATA/s362ani/S362ANI
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 0, read_count: 24
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0   read        0               0            8192     16.8032     16.8195
+ X_POSIX       0   read        1            8192            8182     16.8198     16.8206
+ X_POSIX       0   read        2           16374            8160     16.8209     16.8209
+ X_POSIX       0   read        3           24534            8187     16.8214     16.8214
+ X_POSIX       0   read        4           32721            8179     16.8215     16.8216
+ X_POSIX       0   read        5           40900            8179     16.8217     16.8217
+ X_POSIX       0   read        6           49079            8179     16.8218     16.8218
+ X_POSIX       0   read        7           57258            8179     16.8219     16.8219
+ X_POSIX       0   read        8           65437            8141     16.8220     16.8220
+ X_POSIX       0   read        9           73578            8179     16.8221     16.8221
+ X_POSIX       0   read       10           81757            8179     16.8223     16.8223
+ X_POSIX       0   read       11           89936            8179     16.8224     16.8224
+ X_POSIX       0   read       12           98115            8179     16.8225     16.8225
+ X_POSIX       0   read       13          106294            8179     16.8226     16.8226
+ X_POSIX       0   read       14          114473            8179     16.8227     16.8227
+ X_POSIX       0   read       15          122652            8141     16.8228     16.8228
+ X_POSIX       0   read       16          130793            8179     16.8229     16.8229
+ X_POSIX       0   read       17          138972            8179     16.8230     16.8230
+ X_POSIX       0   read       18          147151            8179     16.8231     16.8231
+ X_POSIX       0   read       19          155330            8179     16.8231     16.8231
+ X_POSIX       0   read       20          163509            8179     16.8232     16.8232
+ X_POSIX       0   read       21          171688            5910     16.8233     16.8234
+ X_POSIX       0   read       22          177598               0     16.8234     16.8234
+ X_POSIX       0   read       23          177598               0     16.8235     16.8235
+
+# DXT, file_id: 4664994884629835395, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATA/crust2.0/CNtype2.txt
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 0, read_count: 11
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0   read        0               0            8192     17.0188     17.0329
+ X_POSIX       0   read        1            8192            8145     17.0330     17.0416
+ X_POSIX       0   read        2           16337            8145     17.0417     17.0417
+ X_POSIX       0   read        3           24482            8145     17.0419     17.0419
+ X_POSIX       0   read        4           32627            8145     17.0420     17.0420
+ X_POSIX       0   read        5           40772            8145     17.0422     17.0422
+ X_POSIX       0   read        6           48917            8145     17.0423     17.0423
+ X_POSIX       0   read        7           57062            8145     17.0425     17.0425
+ X_POSIX       0   read        8           65207            8145     17.0426     17.0426
+ X_POSIX       0   read        9           73352            8098     17.0428     17.0428
+ X_POSIX       0   read       10           81450               0     17.0428     17.0428
+
+# DXT, file_id: 1114548382079596753, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATA/crust2.0/CNtype2_key_modif.txt
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 0, read_count: 12
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0   read        0               0            8192     17.0434     17.0572
+ X_POSIX       0   read        1            8192            8165     17.0575     17.0581
+ X_POSIX       0   read        2           16357            8165     17.0584     17.0584
+ X_POSIX       0   read        3           24522            8175     17.0586     17.0586
+ X_POSIX       0   read        4           32697            8155     17.0588     17.0588
+ X_POSIX       0   read        5           40852            8168     17.0590     17.0590
+ X_POSIX       0   read        6           49020            8161     17.0592     17.0592
+ X_POSIX       0   read        7           57181            8170     17.0594     17.0594
+ X_POSIX       0   read        8           65351            8175     17.0597     17.0597
+ X_POSIX       0   read        9           73526            8170     17.0599     17.0599
+ X_POSIX       0   read       10           81696            2863     17.0601     17.0601
+ X_POSIX       0   read       11           84559               0     17.0601     17.0601
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0           18149     18.5017     18.5031
+ X_POSIX       0  write        1          144219           11795     18.5034     18.5037
+ X_POSIX       0  write        2          144219            5194     34.5881     34.5881
+ X_POSIX       0  write        3          185771           23155     34.5884     34.5898
+ X_POSIX       0  write        4          185771            1882     34.8056     34.8063
+ X_POSIX       0  write        5          200827           34515     34.8066     34.8077
+ X_POSIX       0   read        0          155986              28     34.5862     34.5862
+ X_POSIX       0   read        1          144219             416     34.5864     34.5864
+ X_POSIX       0   read        2          144635           10972     34.5865     34.5865
+ X_POSIX       0   read        3          155607             379     34.5867     34.5867
+ X_POSIX       0   read        4          208898              28     34.8038     34.8038
+ X_POSIX       0   read        5          185771             816     34.8039     34.8039
+ X_POSIX       0   read        6          186587           21932     34.8041     34.8041
+ X_POSIX       0   read        7          208519             379     34.8043     34.8043
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0        54975318     33.7756     34.3506
+ X_POSIX       0  write        1       439801571           54524     34.3511     34.4217
+ X_POSIX       0  write        2       439801571         3502251     34.6906     34.7565
+ X_POSIX       0  write        3       467819579           98414     34.7571     34.7619
+ X_POSIX       0  write        4       467819579          180547     34.8183     34.8221
+ X_POSIX       0  write        5       469263955          144326     34.8228     34.8235
+ X_POSIX       0   read        0       439856067              28     34.6815     34.6815
+ X_POSIX       0   read        1       439801571             472     34.6817     34.6817
+ X_POSIX       0   read        2       439802043           53624     34.6818     34.6818
+ X_POSIX       0   read        3       439855667             400     34.6821     34.6821
+ X_POSIX       0   read        4       467917965              28     34.8152     34.8152
+ X_POSIX       0   read        5       467819579             928     34.8153     34.8153
+ X_POSIX       0   read        6       467820507           97058     34.8155     34.8155
+ X_POSIX       0   read        7       467917565             400     34.8160     34.8160
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0          778284     34.4271     34.4304
+ X_POSIX       0  write        1         6225299           39426     34.4308     34.4336
+ X_POSIX       0  write        2         6225299          143057     34.7661     34.7680
+ X_POSIX       0  write        3         7369755           78411     34.7685     34.7700
+ X_POSIX       0  write        4         7369755           21857     34.8273     34.8283
+ X_POSIX       0  write        5         7544611          117396     34.8289     34.8297
+ X_POSIX       0   read        0         6264697              28     34.7634     34.7634
+ X_POSIX       0   read        1         6225299             432     34.7636     34.7636
+ X_POSIX       0   read        2         6225731           38581     34.7637     34.7637
+ X_POSIX       0   read        3         6264312             385     34.7639     34.7639
+ X_POSIX       0   read        4         7448138              28     34.8250     34.8250
+ X_POSIX       0   read        5         7369755             848     34.8251     34.8251
+ X_POSIX       0   read        6         7370603           77150     34.8252     34.8252
+ X_POSIX       0   read        7         7447753             385     34.8256     34.8256
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0         8897086     34.4517     34.5470
+ X_POSIX       0  write        1        71175715            6925     34.5472     34.5565
+ X_POSIX       0  write        2        71175715          688947     34.7738     34.7922
+ X_POSIX       0  write        3        76687291           13400     34.7924     34.7947
+ X_POSIX       0  write        4        76687291           32947     34.8325     34.8344
+ X_POSIX       0  write        5        76950867           19875     34.8346     34.8350
+ X_POSIX       0   read        0        71182612              28     34.7715     34.7715
+ X_POSIX       0   read        1        71175715             456     34.7716     34.7716
+ X_POSIX       0   read        2        71176171            6047     34.7718     34.7718
+ X_POSIX       0   read        3        71182218             394     34.7719     34.7719
+ X_POSIX       0   read        4        76700663              28     34.8309     34.8309
+ X_POSIX       0   read        5        76687291             896     34.8310     34.8310
+ X_POSIX       0   read        6        76688187           12082     34.8311     34.8311
+ X_POSIX       0   read        7        76700269             394     34.8313     34.8313
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0          121483     34.5591     34.5605
+ X_POSIX       0  write        1         1195499           10921     34.5607     34.5633
+ X_POSIX       0  write        2         1195499           23472     34.7974     34.7975
+ X_POSIX       0  write        3         1438347           21395     34.7978     34.7978
+ X_POSIX       0  write        4         1438347            3504     34.8398     34.8428
+ X_POSIX       0  write        5         1471531           31869     34.8430     34.8438
+ X_POSIX       0   read        0         1206392              28     34.7958     34.7958
+ X_POSIX       0   read        1         1195499             448     34.7960     34.7960
+ X_POSIX       0   read        2         1195947           10054     34.7961     34.7961
+ X_POSIX       0   read        3         1206001             391     34.7962     34.7962
+ X_POSIX       0   read        4         1459714              28     34.8365     34.8376
+ X_POSIX       0   read        5         1438347             880     34.8377     34.8381
+ X_POSIX       0   read        6         1439227           20096     34.8383     34.8383
+ X_POSIX       0   read        7         1459323             391     34.8385     34.8385
+
+# DXT, file_id: 16008934290591939107, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/OUTPUT_FILES/values_from_mesher.h
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 219, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       0  write        0               0               2     34.8450     34.8453
+ X_POSIX       0  write        1               2               3     34.8456     34.8456
+ X_POSIX       0  write        2               5              67     34.8456     34.8456
+ X_POSIX       0  write        3              72               3     34.8456     34.8456
+ X_POSIX       0  write        4              75              20     34.8456     34.8456
+ X_POSIX       0  write        5              95              19     34.8456     34.8457
+ X_POSIX       0  write        6             114               3     34.8457     34.8457
+ X_POSIX       0  write        7             117               3     34.8457     34.8457
+ X_POSIX       0  write        8             120              35     34.8457     34.8457
+ X_POSIX       0  write        9             155               3     34.8457     34.8457
+ X_POSIX       0  write       10             158              52     34.8457     34.8457
+ X_POSIX       0  write       11             210               3     34.8457     34.8457
+ X_POSIX       0  write       12             213              39     34.8457     34.8457
+ X_POSIX       0  write       13             252               3     34.8457     34.8457
+ X_POSIX       0  write       14             255              54     34.8457     34.8457
+ X_POSIX       0  write       15             309               3     34.8457     34.8457
+ X_POSIX       0  write       16             312              45     34.8457     34.8458
+ X_POSIX       0  write       17             357              64     34.8458     34.8458
+ X_POSIX       0  write       18             421               3     34.8458     34.8458
+ X_POSIX       0  write       19             424              43     34.8458     34.8458
+ X_POSIX       0  write       20             467              41     34.8458     34.8458
+ X_POSIX       0  write       21             508               3     34.8458     34.8458
+ X_POSIX       0  write       22             511              65     34.8458     34.8458
+ X_POSIX       0  write       23             576              76     34.8458     34.8458
+ X_POSIX       0  write       24             652               3     34.8458     34.8458
+ X_POSIX       0  write       25             655              32     34.8458     34.8458
+ X_POSIX       0  write       26             687              31     34.8458     34.8458
+ X_POSIX       0  write       27             718               3     34.8458     34.8459
+ X_POSIX       0  write       28             721              61     34.8459     34.8459
+ X_POSIX       0  write       29             782              28     34.8459     34.8459
+ X_POSIX       0  write       30             810              56     34.8459     34.8459
+ X_POSIX       0  write       31             866              28     34.8459     34.8459
+ X_POSIX       0  write       32             894              68     34.8459     34.8459
+ X_POSIX       0  write       33             962              28     34.8459     34.8459
+ X_POSIX       0  write       34             990               3     34.8459     34.8459
+ X_POSIX       0  write       35             993              46     34.8459     34.8459
+ X_POSIX       0  write       36            1039              45     34.8459     34.8459
+ X_POSIX       0  write       37            1084               3     34.8459     34.8460
+ X_POSIX       0  write       38            1087              64     34.8460     34.8460
+ X_POSIX       0  write       39            1151              65     34.8460     34.8460
+ X_POSIX       0  write       40            1216               3     34.8460     34.8460
+ X_POSIX       0  write       41            1219              52     34.8460     34.8460
+ X_POSIX       0  write       42            1271              51     34.8460     34.8460
+ X_POSIX       0  write       43            1322               3     34.8460     34.8460
+ X_POSIX       0  write       44            1325              58     34.8460     34.8460
+ X_POSIX       0  write       45            1383               3     34.8460     34.8460
+ X_POSIX       0  write       46            1386              23     34.8460     34.8460
+ X_POSIX       0  write       47            1409              51     34.8460     34.8461
+ X_POSIX       0  write       48            1460              50     34.8461     34.8461
+ X_POSIX       0  write       49            1510               3     34.8461     34.8461
+ X_POSIX       0  write       50            1513              23     34.8461     34.8461
+ X_POSIX       0  write       51            1536              51     34.8461     34.8461
+ X_POSIX       0  write       52            1587              50     34.8461     34.8461
+ X_POSIX       0  write       53            1637               3     34.8461     34.8461
+ X_POSIX       0  write       54            1640              23     34.8461     34.8461
+ X_POSIX       0  write       55            1663              51     34.8461     34.8461
+ X_POSIX       0  write       56            1714              50     34.8461     34.8461
+ X_POSIX       0  write       57            1764               3     34.8461     34.8461
+ X_POSIX       0  write       58            1767              23     34.8461     34.8462
+ X_POSIX       0  write       59            1790              51     34.8462     34.8462
+ X_POSIX       0  write       60            1841              50     34.8462     34.8462
+ X_POSIX       0  write       61            1891               3     34.8462     34.8462
+ X_POSIX       0  write       62            1894              42     34.8462     34.8462
+ X_POSIX       0  write       63            1936              41     34.8462     34.8462
+ X_POSIX       0  write       64            1977               3     34.8462     34.8462
+ X_POSIX       0  write       65            1980              57     34.8462     34.8462
+ X_POSIX       0  write       66            2037              50     34.8462     34.8462
+ X_POSIX       0  write       67            2087              64     34.8463     34.8463
+ X_POSIX       0  write       68            2151              59     34.8463     34.8463
+ X_POSIX       0  write       69            2210              62     34.8463     34.8463
+ X_POSIX       0  write       70            2272               3     34.8463     34.8463
+ X_POSIX       0  write       71            2275               2     34.8463     34.8463
+ X_POSIX       0  write       72            2277              51     34.8463     34.8463
+ X_POSIX       0  write       73            2328              50     34.8463     34.8463
+ X_POSIX       0  write       74            2378               3     34.8463     34.8463
+ X_POSIX       0  write       75            2381              67     34.8463     34.8463
+ X_POSIX       0  write       76            2448               3     34.8463     34.8463
+ X_POSIX       0  write       77            2451              73     34.8463     34.8463
+ X_POSIX       0  write       78            2524              39     34.8463     34.8464
+ X_POSIX       0  write       79            2563              69     34.8464     34.8464
+ X_POSIX       0  write       80            2632               3     34.8464     34.8464
+ X_POSIX       0  write       81            2635              66     34.8464     34.8464
+ X_POSIX       0  write       82            2701              67     34.8464     34.8464
+ X_POSIX       0  write       83            2768              66     34.8464     34.8464
+ X_POSIX       0  write       84            2834              67     34.8464     34.8464
+ X_POSIX       0  write       85            2901               3     34.8464     34.8464
+ X_POSIX       0  write       86            2904              68     34.8464     34.8464
+ X_POSIX       0  write       87            2972              68     34.8464     34.8464
+ X_POSIX       0  write       88            3040              68     34.8464     34.8464
+ X_POSIX       0  write       89            3108              34     34.8465     34.8465
+ X_POSIX       0  write       90            3142              66     34.8465     34.8465
+ X_POSIX       0  write       91            3208              45     34.8465     34.8465
+ X_POSIX       0  write       92            3253               3     34.8465     34.8465
+ X_POSIX       0  write       93            3256              71     34.8465     34.8465
+ X_POSIX       0  write       94            3327              72     34.8465     34.8465
+ X_POSIX       0  write       95            3399              71     34.8465     34.8465
+ X_POSIX       0  write       96            3470              72     34.8465     34.8465
+ X_POSIX       0  write       97            3542              71     34.8465     34.8465
+ X_POSIX       0  write       98            3613              72     34.8465     34.8465
+ X_POSIX       0  write       99            3685               3     34.8465     34.8466
+ X_POSIX       0  write      100            3688               2     34.8466     34.8466
+ X_POSIX       0  write      101            3690              49     34.8466     34.8466
+ X_POSIX       0  write      102            3739              50     34.8466     34.8466
+ X_POSIX       0  write      103            3789               2     34.8466     34.8466
+ X_POSIX       0  write      104            3791              57     34.8466     34.8466
+ X_POSIX       0  write      105            3848              55     34.8466     34.8466
+ X_POSIX       0  write      106            3903              55     34.8466     34.8466
+ X_POSIX       0  write      107            3958               2     34.8466     34.8466
+ X_POSIX       0  write      108            3960              57     34.8466     34.8466
+ X_POSIX       0  write      109            4017              55     34.8466     34.8466
+ X_POSIX       0  write      110            4072              55     34.8466     34.8467
+ X_POSIX       0  write      111            4127               2     34.8467     34.8467
+ X_POSIX       0  write      112            4129              56     34.8467     34.8467
+ X_POSIX       0  write      113            4185               2     34.8467     34.8467
+ X_POSIX       0  write      114            4187              58     34.8467     34.8467
+ X_POSIX       0  write      115            4245              59     34.8467     34.8467
+ X_POSIX       0  write      116            4304              60     34.8467     34.8467
+ X_POSIX       0  write      117            4364               2     34.8467     34.8467
+ X_POSIX       0  write      118            4366              69     34.8467     34.8467
+ X_POSIX       0  write      119            4435              67     34.8467     34.8467
+ X_POSIX       0  write      120            4502               2     34.8467     34.8467
+ X_POSIX       0  write      121            4504              68     34.8467     34.8468
+ X_POSIX       0  write      122            4572              66     34.8468     34.8468
+ X_POSIX       0  write      123            4638               2     34.8468     34.8468
+ X_POSIX       0  write      124            4640              69     34.8468     34.8468
+ X_POSIX       0  write      125            4709              67     34.8468     34.8468
+ X_POSIX       0  write      126            4776               2     34.8468     34.8468
+ X_POSIX       0  write      127            4778              69     34.8468     34.8468
+ X_POSIX       0  write      128            4847              67     34.8468     34.8468
+ X_POSIX       0  write      129            4914               2     34.8468     34.8468
+ X_POSIX       0  write      130            4916              65     34.8468     34.8468
+ X_POSIX       0  write      131            4981              63     34.8468     34.8468
+ X_POSIX       0  write      132            5044              63     34.8468     34.8468
+ X_POSIX       0  write      133            5107              65     34.8469     34.8469
+ X_POSIX       0  write      134            5172              63     34.8469     34.8469
+ X_POSIX       0  write      135            5235              63     34.8469     34.8469
+ X_POSIX       0  write      136            5298              67     34.8469     34.8469
+ X_POSIX       0  write      137            5365               2     34.8469     34.8469
+ X_POSIX       0  write      138            5367              64     34.8469     34.8469
+ X_POSIX       0  write      139            5431              62     34.8469     34.8469
+ X_POSIX       0  write      140            5493               2     34.8469     34.8469
+ X_POSIX       0  write      141            5495              64     34.8469     34.8469
+ X_POSIX       0  write      142            5559               2     34.8469     34.8469
+ X_POSIX       0  write      143            5561              56     34.8469     34.8469
+ X_POSIX       0  write      144            5617               2     34.8469     34.8470
+ X_POSIX       0  write      145            5619              59     34.8470     34.8470
+ X_POSIX       0  write      146            5678               2     34.8470     34.8470
+ X_POSIX       0  write      147            5680              60     34.8470     34.8470
+ X_POSIX       0  write      148            5740               2     34.8470     34.8470
+ X_POSIX       0  write      149            5742              48     34.8470     34.8470
+ X_POSIX       0  write      150            5790               2     34.8470     34.8470
+ X_POSIX       0  write      151            5792              52     34.8470     34.8470
+ X_POSIX       0  write      152            5844               2     34.8470     34.8470
+ X_POSIX       0  write      153            5846              48     34.8470     34.8470
+ X_POSIX       0  write      154            5894               2     34.8470     34.8470
+ X_POSIX       0  write      155            5896              44     34.8470     34.8470
+ X_POSIX       0  write      156            5940               2     34.8470     34.8471
+ X_POSIX       0  write      157            5942              43     34.8471     34.8471
+ X_POSIX       0  write      158            5985               2     34.8471     34.8471
+ X_POSIX       0  write      159            5987              51     34.8471     34.8471
+ X_POSIX       0  write      160            6038              51     34.8471     34.8471
+ X_POSIX       0  write      161            6089               2     34.8471     34.8471
+ X_POSIX       0  write      162            6091              45     34.8471     34.8471
+ X_POSIX       0  write      163            6136              68     34.8471     34.8471
+ X_POSIX       0  write      164            6204               2     34.8471     34.8471
+ X_POSIX       0  write      165            6206              64     34.8471     34.8471
+ X_POSIX       0  write      166            6270               2     34.8471     34.8471
+ X_POSIX       0  write      167            6272              66     34.8471     34.8471
+ X_POSIX       0  write      168            6338               2     34.8471     34.8472
+ X_POSIX       0  write      169            6340              51     34.8472     34.8472
+ X_POSIX       0  write      170            6391              52     34.8472     34.8472
+ X_POSIX       0  write      171            6443              50     34.8472     34.8472
+ X_POSIX       0  write      172            6493              51     34.8472     34.8472
+ X_POSIX       0  write      173            6544               2     34.8472     34.8472
+ X_POSIX       0  write      174            6546              47     34.8472     34.8472
+ X_POSIX       0  write      175            6593              47     34.8472     34.8472
+ X_POSIX       0  write      176            6640              47     34.8472     34.8472
+ X_POSIX       0  write      177            6687              47     34.8472     34.8472
+ X_POSIX       0  write      178            6734              47     34.8472     34.8472
+ X_POSIX       0  write      179            6781               2     34.8472     34.8472
+ X_POSIX       0  write      180            6783              62     34.8472     34.8473
+ X_POSIX       0  write      181            6845              62     34.8473     34.8473
+ X_POSIX       0  write      182            6907              56     34.8473     34.8473
+ X_POSIX       0  write      183            6963              53     34.8473     34.8473
+ X_POSIX       0  write      184            7016              62     34.8473     34.8473
+ X_POSIX       0  write      185            7078              62     34.8473     34.8473
+ X_POSIX       0  write      186            7140              56     34.8473     34.8473
+ X_POSIX       0  write      187            7196              53     34.8473     34.8473
+ X_POSIX       0  write      188            7249              62     34.8473     34.8473
+ X_POSIX       0  write      189            7311              62     34.8473     34.8473
+ X_POSIX       0  write      190            7373              56     34.8473     34.8473
+ X_POSIX       0  write      191            7429              53     34.8473     34.8473
+ X_POSIX       0  write      192            7482              51     34.8473     34.8474
+ X_POSIX       0  write      193            7533              50     34.8474     34.8474
+ X_POSIX       0  write      194            7583              50     34.8474     34.8474
+ X_POSIX       0  write      195            7633              50     34.8474     34.8474
+ X_POSIX       0  write      196            7683              50     34.8474     34.8474
+ X_POSIX       0  write      197            7733               2     34.8474     34.8474
+ X_POSIX       0  write      198            7735              57     34.8474     34.8474
+ X_POSIX       0  write      199            7792              54     34.8474     34.8474
+ X_POSIX       0  write      200            7846              54     34.8474     34.8474
+ X_POSIX       0  write      201            7900               2     34.8474     34.8474
+ X_POSIX       0  write      202            7902              52     34.8474     34.8475
+ X_POSIX       0  write      203            7954              50     34.8475     34.8475
+ X_POSIX       0  write      204            8004              50     34.8475     34.8475
+ X_POSIX       0  write      205            8054               2     34.8475     34.8475
+ X_POSIX       0  write      206            8056              67     34.8475     34.8475
+ X_POSIX       0  write      207            8123               2     34.8475     34.8475
+ X_POSIX       0  write      208            8125              57     34.8475     34.8475
+ X_POSIX       0  write      209            8182               2     34.8475     34.8475
+ X_POSIX       0  write      210            8184              54     34.8475     34.8475
+ X_POSIX       0  write      211            8238              62     34.8475     34.8475
+ X_POSIX       0  write      212            8300               2     34.8475     34.8475
+ X_POSIX       0  write      213            8302              80     34.8476     34.8476
+ X_POSIX       0  write      214            8382              79     34.8476     34.8476
+ X_POSIX       0  write      215            8461              78     34.8476     34.8476
+ X_POSIX       0  write      216            8539              79     34.8476     34.8476
+ X_POSIX       0  write      217            8618              74     34.8476     34.8476
+ X_POSIX       0  write      218            8692               2     34.8476     34.8476
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       1  write        0           18149           18010     18.4992     18.4995
+ X_POSIX       1  write        1          149413            5194     34.5878     34.5879
+ X_POSIX       1  write        2          187653            1882     34.8053     34.8054
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       1  write        0        54975318        54975179     33.7741     34.2543
+ X_POSIX       1  write        1       443303822         3502251     34.6897     34.7298
+ X_POSIX       1  write        2       468000126          180547     34.8174     34.8178
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       1  write        0          778284          778145     34.4262     34.4272
+ X_POSIX       1  write        1         6368356          143057     34.7654     34.7657
+ X_POSIX       1  write        2         7391612           21857     34.8268     34.8269
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       1  write        0         8897086         8896947     34.4516     34.4933
+ X_POSIX       1  write        1        71864662          688947     34.7737     34.7896
+ X_POSIX       1  write        2        76720238           32947     34.8323     34.8324
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       1  write        0          121483          121344     34.5588     34.5591
+ X_POSIX       1  write        1         1218971           23472     34.7972     34.7973
+ X_POSIX       1  write        2         1441851            3504     34.8395     34.8401
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       2  write        0           36159           18010     18.4992     18.5004
+ X_POSIX       2  write        1          154607            5194     34.5879     34.5880
+ X_POSIX       2  write        2          189535            1882     34.8053     34.8053
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       2  write        0       109950497        54975179     33.7741     34.1498
+ X_POSIX       2  write        1       446806073         3502251     34.6898     34.7220
+ X_POSIX       2  write        2       468180673          180547     34.8175     34.8221
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       2  write        0         1556429          778145     34.4263     34.4305
+ X_POSIX       2  write        1         6511413          143057     34.7654     34.7679
+ X_POSIX       2  write        2         7413469           21857     34.8268     34.8269
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       2  write        0        17794033         8896947     34.4516     34.4755
+ X_POSIX       2  write        1        72553609          688947     34.7737     34.7857
+ X_POSIX       2  write        2        76753185           32947     34.8323     34.8344
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       2  write        0          242827          177496     34.5588     34.5604
+ X_POSIX       2  write        1         1242443           37240     34.7972     34.7974
+ X_POSIX       2  write        2         1445355            4792     34.8395     34.8416
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       3  write        0           54169           18010     18.4992     18.5001
+ X_POSIX       3  write        1          159801            5194     34.5878     34.5880
+ X_POSIX       3  write        2          191417            1882     34.8053     34.8053
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       3  write        0       164925676        54975179     33.7741     34.0275
+ X_POSIX       3  write        1       450308324         3502251     34.6897     34.6925
+ X_POSIX       3  write        2       468361220          180547     34.8175     34.8178
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       3  write        0         2334574          778145     34.4262     34.4344
+ X_POSIX       3  write        1         6654470          143057     34.7654     34.7657
+ X_POSIX       3  write        2         7435326           21857     34.8268     34.8268
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       3  write        0        26690980         8896947     34.4516     34.5009
+ X_POSIX       3  write        1        73242556          688947     34.7736     34.7743
+ X_POSIX       3  write        2        76786132           32947     34.8323     34.8324
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       3  write        0          420323          177496     34.5588     34.5626
+ X_POSIX       3  write        1         1279683           37240     34.7972     34.7973
+ X_POSIX       3  write        2         1450147            4792     34.8395     34.8404
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       4  write        0           72179           18010     18.4997     18.5014
+ X_POSIX       4  write        1          164995            5194     34.5879     34.5899
+ X_POSIX       4  write        2          193299            1882     34.8054     34.8068
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       4  write        0       219900855        54975179     33.7741     34.2018
+ X_POSIX       4  write        1       453810575         3502251     34.6898     34.7238
+ X_POSIX       4  write        2       468541767          180547     34.8175     34.8219
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       4  write        0         3112719          778145     34.4263     34.4374
+ X_POSIX       4  write        1         6797527          143057     34.7654     34.7703
+ X_POSIX       4  write        2         7457183           21857     34.8268     34.8298
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       4  write        0        35587927         8896947     34.4517     34.4805
+ X_POSIX       4  write        1        73931503          688947     34.7737     34.7898
+ X_POSIX       4  write        2        76819079           32947     34.8323     34.8355
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       4  write        0          597819          177496     34.5588     34.5608
+ X_POSIX       4  write        1         1316923           37240     34.7982     34.8011
+ X_POSIX       4  write        2         1454939            4792     34.8395     34.8416
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       5  write        0           90189           18010     18.4996     18.5001
+ X_POSIX       5  write        1          170189            5194     34.5877     34.5888
+ X_POSIX       5  write        2          195181            1882     34.8052     34.8065
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       5  write        0       274876034        54975179     33.7739     34.1516
+ X_POSIX       5  write        1       457312826         3502251     34.6896     34.7410
+ X_POSIX       5  write        2       468722314          180547     34.8174     34.8236
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       5  write        0         3890864          778145     34.4261     34.4312
+ X_POSIX       5  write        1         6940584          143057     34.7653     34.7673
+ X_POSIX       5  write        2         7479040           21857     34.8267     34.8280
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       5  write        0        44484874         8896947     34.4515     34.5207
+ X_POSIX       5  write        1        74620450          688947     34.7735     34.7849
+ X_POSIX       5  write        2        76852026           32947     34.8322     34.8337
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       5  write        0          775315          177496     34.5587     34.5602
+ X_POSIX       5  write        1         1354163           37240     34.7980     34.7997
+ X_POSIX       5  write        2         1459731            4792     34.8394     34.8403
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       6  write        0          108199           18010     18.4997     18.5002
+ X_POSIX       6  write        1          175383            5194     34.5878     34.5898
+ X_POSIX       6  write        2          197063            1882     34.8053     34.8067
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       6  write        0       329851213        54975179     33.7740     34.0271
+ X_POSIX       6  write        1       460815077         3502251     34.6897     34.7230
+ X_POSIX       6  write        2       468902861          180547     34.8174     34.8213
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       6  write        0         4669009          778145     34.4262     34.4346
+ X_POSIX       6  write        1         7083641          143057     34.7654     34.7702
+ X_POSIX       6  write        2         7500897           21857     34.8267     34.8297
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       6  write        0        53381821         8896947     34.4516     34.4806
+ X_POSIX       6  write        1        75309397          688947     34.7736     34.7857
+ X_POSIX       6  write        2        76884973           32947     34.8323     34.8339
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       6  write        0          952811          121344     34.5588     34.5605
+ X_POSIX       6  write        1         1391403           23472     34.7982     34.8010
+ X_POSIX       6  write        2         1464523            3504     34.8395     34.8416
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       7  write        0          126209           18010     18.5015     18.5017
+ X_POSIX       7  write        1          180577            5194     34.5878     34.5889
+ X_POSIX       7  write        2          198945            1882     34.8054     34.8087
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       7  write        0       384826392        54975179     33.7740     33.8213
+ X_POSIX       7  write        1       464317328         3502251     34.6898     34.7264
+ X_POSIX       7  write        2       469083408          180547     34.8175     34.8217
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       7  write        0         5447154          778145     34.4263     34.4300
+ X_POSIX       7  write        1         7226698          143057     34.7654     34.7670
+ X_POSIX       7  write        2         7522754           21857     34.8268     34.8279
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       7  write        0        62278768         8896947     34.4516     34.4597
+ X_POSIX       7  write        1        75998344          688947     34.7736     34.7895
+ X_POSIX       7  write        2        76917920           32947     34.8323     34.8340
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_POSIX       7  write        0         1074155          121344     34.5588     34.5623
+ X_POSIX       7  write        1         1414875           23472     34.7982     34.7999
+ X_POSIX       7  write        2         1468027            3504     34.8395     34.8400
+
+# ***************************************************
+# DXT_MPIIO module data
+# ***************************************************
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       0  write        0               0           18149     18.5016     18.5032
+ X_MPIIO       0  write        1          144219           11795     18.5033     18.5038
+ X_MPIIO       0  write        2          144219            5194     34.5880     34.5882
+ X_MPIIO       0  write        3          185771           23155     34.5883     34.5899
+ X_MPIIO       0  write        4          185771            1882     34.8055     34.8064
+ X_MPIIO       0  write        5          200827           34515     34.8066     34.8078
+ X_MPIIO       0   read        0          155986              28     34.5862     34.5863
+ X_MPIIO       0   read        1          144219             416     34.5863     34.5865
+ X_MPIIO       0   read        2          144635           10972     34.5865     34.5866
+ X_MPIIO       0   read        3          155607             379     34.5866     34.5867
+ X_MPIIO       0   read        4          208898              28     34.8038     34.8039
+ X_MPIIO       0   read        5          185771             816     34.8039     34.8040
+ X_MPIIO       0   read        6          186587           21932     34.8040     34.8041
+ X_MPIIO       0   read        7          208519             379     34.8042     34.8043
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       0  write        0               0        54975318     33.7755     34.3507
+ X_MPIIO       0  write        1       439801571           54524     34.3510     34.4219
+ X_MPIIO       0  write        2       439801571         3502251     34.6905     34.7566
+ X_MPIIO       0  write        3       467819579           98414     34.7570     34.7620
+ X_MPIIO       0  write        4       467819579          180547     34.8183     34.8222
+ X_MPIIO       0  write        5       469263955          144326     34.8227     34.8236
+ X_MPIIO       0   read        0       439856067              28     34.6815     34.6816
+ X_MPIIO       0   read        1       439801571             472     34.6816     34.6817
+ X_MPIIO       0   read        2       439802043           53624     34.6817     34.6819
+ X_MPIIO       0   read        3       439855667             400     34.6821     34.6822
+ X_MPIIO       0   read        4       467917965              28     34.8151     34.8153
+ X_MPIIO       0   read        5       467819579             928     34.8153     34.8154
+ X_MPIIO       0   read        6       467820507           97058     34.8154     34.8156
+ X_MPIIO       0   read        7       467917565             400     34.8159     34.8160
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       0  write        0               0          778284     34.4270     34.4305
+ X_MPIIO       0  write        1         6225299           39426     34.4307     34.4337
+ X_MPIIO       0  write        2         6225299          143057     34.7661     34.7681
+ X_MPIIO       0  write        3         7369755           78411     34.7684     34.7701
+ X_MPIIO       0  write        4         7369755           21857     34.8273     34.8284
+ X_MPIIO       0  write        5         7544611          117396     34.8289     34.8298
+ X_MPIIO       0   read        0         6264697              28     34.7634     34.7635
+ X_MPIIO       0   read        1         6225299             432     34.7635     34.7636
+ X_MPIIO       0   read        2         6225731           38581     34.7636     34.7637
+ X_MPIIO       0   read        3         6264312             385     34.7639     34.7640
+ X_MPIIO       0   read        4         7448138              28     34.8249     34.8250
+ X_MPIIO       0   read        5         7369755             848     34.8250     34.8251
+ X_MPIIO       0   read        6         7370603           77150     34.8251     34.8253
+ X_MPIIO       0   read        7         7447753             385     34.8256     34.8257
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       0  write        0               0         8897086     34.4516     34.5471
+ X_MPIIO       0  write        1        71175715            6925     34.5471     34.5567
+ X_MPIIO       0  write        2        71175715          688947     34.7737     34.7923
+ X_MPIIO       0  write        3        76687291           13400     34.7924     34.7948
+ X_MPIIO       0  write        4        76687291           32947     34.8324     34.8345
+ X_MPIIO       0  write        5        76950867           19875     34.8346     34.8351
+ X_MPIIO       0   read        0        71182612              28     34.7715     34.7716
+ X_MPIIO       0   read        1        71175715             456     34.7716     34.7717
+ X_MPIIO       0   read        2        71176171            6047     34.7717     34.7719
+ X_MPIIO       0   read        3        71182218             394     34.7719     34.7720
+ X_MPIIO       0   read        4        76700663              28     34.8308     34.8309
+ X_MPIIO       0   read        5        76687291             896     34.8309     34.8311
+ X_MPIIO       0   read        6        76688187           12082     34.8311     34.8312
+ X_MPIIO       0   read        7        76700269             394     34.8312     34.8313
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 0, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 6, read_count: 8
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       0  write        0               0          121483     34.5590     34.5605
+ X_MPIIO       0  write        1         1195499           10921     34.5606     34.5634
+ X_MPIIO       0  write        2         1195499           23472     34.7974     34.7976
+ X_MPIIO       0  write        3         1438347           21395     34.7977     34.7979
+ X_MPIIO       0  write        4         1438347            3504     34.8397     34.8429
+ X_MPIIO       0  write        5         1471531           31869     34.8430     34.8439
+ X_MPIIO       0   read        0         1206392              28     34.7958     34.7959
+ X_MPIIO       0   read        1         1195499             448     34.7959     34.7960
+ X_MPIIO       0   read        2         1195947           10054     34.7960     34.7961
+ X_MPIIO       0   read        3         1206001             391     34.7962     34.7963
+ X_MPIIO       0   read        4         1459714              28     34.8364     34.8377
+ X_MPIIO       0   read        5         1438347             880     34.8377     34.8382
+ X_MPIIO       0   read        6         1439227           20096     34.8382     34.8383
+ X_MPIIO       0   read        7         1459323             391     34.8384     34.8386
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       1  write        0           18149           18010     18.4991     18.5002
+ X_MPIIO       1  write        1          149413            5194     34.5878     34.5879
+ X_MPIIO       1  write        2          187653            1882     34.8052     34.8055
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       1  write        0        54975318        54975179     33.7739     34.2544
+ X_MPIIO       1  write        1       443303822         3502251     34.6896     34.7299
+ X_MPIIO       1  write        2       468000126          180547     34.8174     34.8178
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       1  write        0          778284          778145     34.4261     34.4273
+ X_MPIIO       1  write        1         6368356          143057     34.7653     34.7658
+ X_MPIIO       1  write        2         7391612           21857     34.8267     34.8270
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       1  write        0         8897086         8896947     34.4514     34.4934
+ X_MPIIO       1  write        1        71864662          688947     34.7735     34.7897
+ X_MPIIO       1  write        2        76720238           32947     34.8322     34.8325
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 1, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       1  write        0          121483          121344     34.5587     34.5592
+ X_MPIIO       1  write        1         1218971           23472     34.7971     34.7974
+ X_MPIIO       1  write        2         1441851            3504     34.8394     34.8402
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       2  write        0           36159           18010     18.4991     18.5005
+ X_MPIIO       2  write        1          154607            5194     34.5878     34.5881
+ X_MPIIO       2  write        2          189535            1882     34.8052     34.8054
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       2  write        0       109950497        54975179     33.7739     34.1500
+ X_MPIIO       2  write        1       446806073         3502251     34.6896     34.7222
+ X_MPIIO       2  write        2       468180673          180547     34.8174     34.8221
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       2  write        0         1556429          778145     34.4262     34.4305
+ X_MPIIO       2  write        1         6511413          143057     34.7653     34.7680
+ X_MPIIO       2  write        2         7413469           21857     34.8267     34.8270
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       2  write        0        17794033         8896947     34.4514     34.4756
+ X_MPIIO       2  write        1        72553609          688947     34.7736     34.7858
+ X_MPIIO       2  write        2        76753185           32947     34.8322     34.8344
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 2, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       2  write        0          242827          177496     34.5587     34.5605
+ X_MPIIO       2  write        1         1242443           37240     34.7972     34.7975
+ X_MPIIO       2  write        2         1445355            4792     34.8394     34.8417
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       3  write        0           54169           18010     18.4991     18.5002
+ X_MPIIO       3  write        1          159801            5194     34.5877     34.5881
+ X_MPIIO       3  write        2          191417            1882     34.8052     34.8054
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       3  write        0       164925676        54975179     33.7738     34.0277
+ X_MPIIO       3  write        1       450308324         3502251     34.6896     34.6926
+ X_MPIIO       3  write        2       468361220          180547     34.8174     34.8178
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       3  write        0         2334574          778145     34.4261     34.4345
+ X_MPIIO       3  write        1         6654470          143057     34.7653     34.7657
+ X_MPIIO       3  write        2         7435326           21857     34.8267     34.8269
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       3  write        0        26690980         8896947     34.4514     34.5011
+ X_MPIIO       3  write        1        73242556          688947     34.7735     34.7744
+ X_MPIIO       3  write        2        76786132           32947     34.8322     34.8325
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 3, hostname: c197-052.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       3  write        0          420323          177496     34.5587     34.5627
+ X_MPIIO       3  write        1         1279683           37240     34.7971     34.7974
+ X_MPIIO       3  write        2         1450147            4792     34.8394     34.8405
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       4  write        0           72179           18010     18.4992     18.5015
+ X_MPIIO       4  write        1          164995            5194     34.5878     34.5900
+ X_MPIIO       4  write        2          193299            1882     34.8052     34.8069
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       4  write        0       219900855        54975179     33.7739     34.2019
+ X_MPIIO       4  write        1       453810575         3502251     34.6897     34.7239
+ X_MPIIO       4  write        2       468541767          180547     34.8174     34.8220
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       4  write        0         3112719          778145     34.4262     34.4375
+ X_MPIIO       4  write        1         6797527          143057     34.7653     34.7704
+ X_MPIIO       4  write        2         7457183           21857     34.8267     34.8299
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       4  write        0        35587927         8896947     34.4515     34.4807
+ X_MPIIO       4  write        1        73931503          688947     34.7736     34.7899
+ X_MPIIO       4  write        2        76819079           32947     34.8322     34.8356
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 4, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       4  write        0          597819          177496     34.5588     34.5609
+ X_MPIIO       4  write        1         1316923           37240     34.7972     34.8012
+ X_MPIIO       4  write        2         1454939            4792     34.8395     34.8417
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       5  write        0           90189           18010     18.4991     18.5007
+ X_MPIIO       5  write        1          170189            5194     34.5876     34.5889
+ X_MPIIO       5  write        2          195181            1882     34.8051     34.8066
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       5  write        0       274876034        54975179     33.7738     34.1519
+ X_MPIIO       5  write        1       457312826         3502251     34.6895     34.7411
+ X_MPIIO       5  write        2       468722314          180547     34.8173     34.8237
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       5  write        0         3890864          778145     34.4260     34.4313
+ X_MPIIO       5  write        1         6940584          143057     34.7652     34.7674
+ X_MPIIO       5  write        2         7479040           21857     34.8266     34.8281
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       5  write        0        44484874         8896947     34.4513     34.5209
+ X_MPIIO       5  write        1        74620450          688947     34.7734     34.7850
+ X_MPIIO       5  write        2        76852026           32947     34.8321     34.8338
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 5, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       5  write        0          775315          177496     34.5586     34.5603
+ X_MPIIO       5  write        1         1354163           37240     34.7970     34.7998
+ X_MPIIO       5  write        2         1459731            4792     34.8393     34.8404
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       6  write        0          108199           18010     18.4992     18.5008
+ X_MPIIO       6  write        1          175383            5194     34.5877     34.5899
+ X_MPIIO       6  write        2          197063            1882     34.8052     34.8068
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       6  write        0       329851213        54975179     33.7738     34.0274
+ X_MPIIO       6  write        1       460815077         3502251     34.6896     34.7232
+ X_MPIIO       6  write        2       468902861          180547     34.8173     34.8215
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       6  write        0         4669009          778145     34.4261     34.4347
+ X_MPIIO       6  write        1         7083641          143057     34.7653     34.7703
+ X_MPIIO       6  write        2         7500897           21857     34.8267     34.8298
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       6  write        0        53381821         8896947     34.4514     34.4807
+ X_MPIIO       6  write        1        75309397          688947     34.7735     34.7859
+ X_MPIIO       6  write        2        76884973           32947     34.8322     34.8339
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 6, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       6  write        0          952811          121344     34.5587     34.5606
+ X_MPIIO       6  write        1         1391403           23472     34.7971     34.8011
+ X_MPIIO       6  write        2         1464523            3504     34.8394     34.8417
+
+# DXT, file_id: 5431743959049801296, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/stacey.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       7  write        0          126209           18010     18.5014     18.5018
+ X_MPIIO       7  write        1          180577            5194     34.5878     34.5890
+ X_MPIIO       7  write        2          198945            1882     34.8052     34.8087
+
+# DXT, file_id: 4110627256476436230, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       7  write        0       384826392        54975179     33.7739     33.8215
+ X_MPIIO       7  write        1       464317328         3502251     34.6897     34.7265
+ X_MPIIO       7  write        2       469083408          180547     34.8174     34.8218
+
+# DXT, file_id: 14325125717893122181, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/boundary.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       7  write        0         5447154          778145     34.4262     34.4301
+ X_MPIIO       7  write        1         7226698          143057     34.7653     34.7672
+ X_MPIIO       7  write        2         7522754           21857     34.8267     34.8280
+
+# DXT, file_id: 17348985365701488170, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/attenuation.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       7  write        0        62278768         8896947     34.4515     34.4598
+ X_MPIIO       7  write        1        75998344          688947     34.7736     34.7897
+ X_MPIIO       7  write        2        76917920           32947     34.8322     34.8341
+
+# DXT, file_id: 2116023013457362855, file_name: /scratch1/06058/iwang/benchmarks/specfem3d/tinytest_rtx_8_adios_darshan/DATABASES_MPI/solver_data_mpi.bp
+# DXT, rank: 7, hostname: c198-021.frontera.tacc.utexas.edu
+# DXT, write_count: 3, read_count: 0
+# DXT, mnt_pt: /scratch1, fs_type: lustre
+# Module    Rank  Wt/Rd  Segment          Offset       Length    Start(s)      End(s)
+ X_MPIIO       7  write        0         1074155          121344     34.5587     34.5623
+ X_MPIIO       7  write        1         1414875           23472     34.7972     34.8000
+ X_MPIIO       7  write        2         1468027            3504     34.8394     34.8401
