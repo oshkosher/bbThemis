@@ -85,7 +85,9 @@ int main(int argc, char **argv) {
   // cout << a.offset << ".." << (a.offset + a.length - 1) << endl;
 
   // ifstream inf("sample_dxt_mpiio.txt");
-  readDarshanDxtInput(cin, file_table);
+  ifstream inf("sample.dxt");
+  readDarshanDxtInput(inf, file_table);
+  // readDarshanDxtInput(cin, file_table);
 
   // writeData(file_table);
 
@@ -159,12 +161,13 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table) {
       }
       if (line[0] == '#') continue;
       
-      Event event(rank);
-      if (!parseEventLine(event, line)) {
+      EventPtr event(new Event());
+      if (!parseEventLine(*event, line)) {
         cerr << "Unrecognized line: " << line << endl;
       } else {
         // cout << event.str() << endl;
-        current_file->events.insert(event);
+        // current_file->events.insert(*event);
+        current_file->addEvent(event);
         // cout << current_file->events.size() << endl;
       }
     }
@@ -190,19 +193,20 @@ bool startsWith(const string &s, const char *search_str) {
       X_POSIX   1  read    9    4718592     524288   1.2240  1.2261
    Subexpressions:
    1: io library (X_MPIIO or X_POSIX)
-   2: direction (write or read)
-   3: offset
-   4: length
-   5: start time
-   6: end time
+   2: rank
+   3: direction (write or read)
+   4: offset
+   5: length
+   6: start time
+   7: end time
 */
-static regex io_event_re("^ *(X_MPIIO|X_POSIX) +[0-9]+ +([a-z]+) +[0-9]+ +([-0-9]+) +([0-9]+) +([0-9.]+) +([0-9.]+)");
+static regex io_event_re("^ *(X_MPIIO|X_POSIX) +([0-9]+) +([a-z]+) +[0-9]+ +([-0-9]+) +([0-9]+) +([0-9.]+) +([0-9.]+)");
 
 bool parseEventLine(Event &event, const string &line) {
   smatch re_matches;
 
   if (!regex_search(line, re_matches, io_event_re)) return false;
-  if (re_matches.size() != 7) return false;
+  if (re_matches.size() != 8) return false;
 
   /*
   cout << "  " << re_matches[1] << " action=" << re_matches[2]
@@ -222,19 +226,21 @@ bool parseEventLine(Event &event, const string &line) {
     return false;
   }
 
-  if (re_matches[2] == "read") {
+  event.rank = stoi(re_matches[2]);
+
+  if (re_matches[3] == "read") {
     event.mode = Event::READ;
-  } else if (re_matches[2] == "write") {
+  } else if (re_matches[3] == "write") {
     event.mode = Event::WRITE;
   } else {
-    cerr << "invalid io access type: " << re_matches[2] << endl;
+    cerr << "invalid io access type: " << re_matches[3] << endl;
     return false;
   }
 
-  event.offset = stoll(re_matches[3]);
-  event.length = stoll(re_matches[4]);
-  event.start_time = stod(re_matches[5]);
-  event.end_time = stod(re_matches[6]);
+  event.offset = stoll(re_matches[4]);
+  event.length = stoll(re_matches[5]);
+  event.start_time = stod(re_matches[6]);
+  event.end_time = stod(re_matches[7]);
 
   return true;
 }
@@ -276,6 +282,17 @@ void scanForConflicts(File *f) {
   // CurrentEventsType current_events;
   // CurrentEventsType::iterator cur_it;
 
+  cout << "scanForConflicts(" << f->name << ")\n";
+  // std::map<int,EventSequencePtr>::iterator seq_it;
+  // std::map<int,unique_ptr<EventSequence>>::iterator it;
+  // for (it = f->rank_seq.begin(); it != f->rank_seq.end(); it++) {
+  for (auto &it : f->rank_seq) {
+    int rank = it.first;
+    EventSequence *seq = it.second.get();
+    cout << "  rank " << rank << ", "
+         << seq->elist.size() << endl;
+  }
+  
   /*
   File::EventSetType::iterator ev_it;
   for (ev_it = f->events.begin(); ev_it != f->events.end(); ev_it++) {
