@@ -193,23 +193,25 @@ class FileInfo:
         if self.readers == self.writers:
           return 'SINGLE_RW'
         else:
+          # one rank reads, one rank writes: producer/consumer?
           return 'MULTIPLE_RW'
       else:
         return 'MULTIPLE_RW'
     else:
       # multiple writers
       if nr == 0:
+        # STDERR and STDOUT are often MULTIPLE_WO
         return 'MULTIPLE_WO'
       else:
         return 'MULTIPLE_RW'
 
   def accessDetail(self):
     return f'readers={rankSetList(self.readers)},writers={rankSetList(self.writers)}'
-      
+
+  
 def printHelp():
   print(help_str)
   sys.exit(1)
-    
 
 
 if __name__ == '__main__':
