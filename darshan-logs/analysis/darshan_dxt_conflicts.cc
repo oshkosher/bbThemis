@@ -168,8 +168,8 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table) {
       }
       if (line[0] == '#') continue;
       
-      EventPtr event(new Event());
-      if (!parseEventLine(*event, line)) {
+      Event event;
+      if (!parseEventLine(event, line)) {
         cerr << "Unrecognized line: " << line << endl;
       } else {
         // cout << event.str() << endl;
@@ -350,29 +350,25 @@ void scanForConflicts(File *f) {
     overlap_set.addEvent(e);
     
   }
-  
-  
 }
 
 
-void EventSequence::addEvent(EventPtr e) {
+
+void EventSequence::addEvent(Event e) {
   validate();
 
-  std::cout << "Adding " << e.get()->str() << std::endl;
+  std::cout << "Adding " << e.str() << std::endl;
 
   EventList::iterator overlap_it = firstOverlapping(e);
   if (overlap_it == elist.end()) {
-    elist.insert(e);
+    elist[e.offset] = e;
     validate();
     print();
     return;
   }
 
-  // Event *overlap = overlap_it->get();
-  // Event *overlap = **overlap_it;
-
-  if (overlap_it->get()->offset < e->offset) {
-    assert(e->offset < overlap_it->get()->endOffset());
+  if (overlap_it->second.offset < e.offset) {
+    assert(e.offset < overlap_it->second.endOffset());
       
     /* e starts during overlap. Split off the nonoverlapping part of overlap
 
@@ -385,14 +381,11 @@ void EventSequence::addEvent(EventPtr e) {
        overlap2    |------|
     */
 
-    EventPtr overlap_remainder = overlap_it->get()->split(e->offset);
+    Event overlap_remainder = overlap_it->second.split(e.offset);
 
     std::pair<EventList::iterator,bool> insert_result =
-      elist.insert(overlap_remainder);
-    // check that insertion worked as expected
-    assert(insert_result.second == true);
-    assert(insert_result.first->get() == overlap_remainder.get());
-
+      elist.insert( std::pair<int64_t,Event>(overlap_remainder.offset,
+                                             overlap_remainder) );
     overlap_it = insert_result.first;
   }
 
@@ -401,54 +394,60 @@ void EventSequence::addEvent(EventPtr e) {
   // e is a new event we're adding to elist
   // next_it points to the first event in elist that starts at the same offset
   // as e or later.
-  while (e) {
+  while (true) {
 
-    // e is past the end of existing elements; just insert it
+    // if e is past the end of existing elements just insert it
     if (next_it == elist.end()) {
-      elist.insert(e);
+      elist[e.offset] = e;
       break;
     }
     
-    Event *next = next_it->get();
-    assert(next);
-    assert(next->offset >= e->offset);
-    assert(next->offset < e->endOffset());
+    Event &next = next_it->second;
+    assert(next.offset >= e.offset);
+    assert(next.offset < e.endOffset());
 
     // e starts before next: split off the prefix of e
-    if (e->offset < next->offset) {
+    if (e.offset < next.offset) {
       
       // if there's no overlap we're done
-      if (next->startsAfter(*e)) {
-        elist.insert(e);
-        e.reset();
-        continue;
+      if (next.startsAfter(e)) {
+        elist[e.offset] = e;
+        break;
       }
 
       // otherwise there's overlap and e needs to be split
-      EventPtr tmp = e->split(next->offset);
-      elist.insert(e);
+      Event tmp = e.split(next.offset);
+      elist[e.offset] = e;
 
-      // continue with e_remainder, which shares a start with next
+      // continue with the remainder, which shares a start with next
       e = tmp;
     }
 
     // remaining case: e and next start at the same offset
-    assert(e->offset == next->offset);
+    assert(e.offset == next.offset);
 
-    EventPtr e_leftover(nullptr);
+    Event e_leftover(0, 0);
     
     // if e and next are different lengths, trim the longer one
-    if (e->length > next->length) {
+    if (e.length > next.length) {
       // e is longer, merge the beginnging into next
-      e_leftover = e->split(next->endOffset());
-    } else if (next->length > e->length) {
-      // next is longer, spilt it, merge e, and finish
-      elist.insert(next->split(e->endOffset()));
+      e_leftover = e.split(next.endOffset());
+    } else if (next.length > e.length) {
+      // next is longer, split it, merge e, and finish
+      Event tmp = next.split(e.endOffset());
+      elist[tmp.offset] = tmp;
     }
     
-    assert(e->offset == next->offset);
-    assert(e->length == next->length);
-    next->mergeMode(*e);
+    assert(e.offset == next.offset);
+    assert(e.length == next.length);
+    next.mergeMode(e);
+
+    /* e longer than next: split e, merge, continue with remainder of e
+       next longer than e: split next, merge, done
+       same length: merge, done */
+    
+    if (e_leftover.length == 0)
+      break;
 
     e = e_leftover;
     next_it++;
@@ -459,7 +458,7 @@ void EventSequence::addEvent(EventPtr e) {
 }
 
 
-EventSequence::EventList::iterator EventSequence::firstOverlapping(const EventPtr &evt) {
+EventSequence::EventList::iterator EventSequence::firstOverlapping(const Event &evt) {
   EventList::iterator next, prev;
     
   /* quick checks. There is no overlap if:
@@ -468,13 +467,13 @@ EventSequence::EventList::iterator EventSequence::firstOverlapping(const EventPt
      - evt begins after the last element finishes
   */
   if (elist.empty()
-      || (*elist.begin())->startsAfter(*evt)
-      || evt->startsAfter(**elist.rbegin())) {
+      || elist.begin()->second.startsAfter(evt)
+      || evt.startsAfter(elist.rbegin()->second)) {
     return elist.end();
   }
     
   // get the first element such that it >= evt
-  next = elist.lower_bound(evt);
+  next = elist.lower_bound(evt.offset);
 
   // if next is not the first element in the list, check for an overlap
   // with the element before it
@@ -482,43 +481,52 @@ EventSequence::EventList::iterator EventSequence::firstOverlapping(const EventPt
     EventList::iterator prev = next;
     prev--;
     // if evt overlaps prev, then prev is the first overlapping event
-    assert((*prev)->offset < evt->offset);
-    if (!evt->startsAfter(**prev)) {
+    assert(prev->first < evt.offset);
+    if (!evt.startsAfter(prev->second)) {
       return prev;
     }
   }
     
   // the only remaining possible overlap is that evt overlaps next
-  if ((*next)->startsAfter(*evt)) {
+  if (next->second.startsAfter(evt)) {
     return elist.end();
   }
 
-  assert(evt->overlaps(**next));
+  assert(evt.overlaps(next->second));
   return next;
 }
 
 
 bool EventSequence::validate() {
-  // EventList::iterator it;
-  const Event *prev = nullptr;
+  if (elist.empty()) return true;;
+  
+  EventList::iterator prev_it = elist.begin();
+  EventList::iterator it = prev_it;
+  assert(it->first == it->second.offset);
+  it++;
 
-  for (EventList::iterator it = elist.begin(); it != elist.end(); it++) {
-    const Event *e = it->get();
-    if (prev) {
-      if (e->offset <= prev->offset) {
-        std::cerr << "Error out of order events (" << prev->str() << ") and ("
-                  << e->str() << ")\n";
-        return false;
-      }
+  while (it != elist.end()) {
 
-      if (e->offset < prev->endOffset()) {
-        std::cerr << "Overlapping events (" << prev->str() << ") and ("
-                  << e->str() << ")\n";
-        return false;
-      }
+    const Event &prev = prev_it->second, &e = it->second;
+    assert(prev.offset == prev_it->first);
+    assert(e.offset == it->first);
+
+    if (e.offset <= prev.offset) {
+      std::cerr << "Error out of order events (" << prev.str() << ") and ("
+                << e.str() << ")\n";
+      return false;
     }
-    prev = e;
+
+    if (e.offset < prev.endOffset()) {
+      std::cerr << "Overlapping events (" << prev.str() << ") and ("
+                << e.str() << ")\n";
+      return false;
+    }
+
+    prev_it = it;
+    it++;
   }
+
   return true;
 }
 
@@ -526,9 +534,9 @@ bool EventSequence::validate() {
 void EventSequence::print() {
   std::cout << "EventSequence " << name << std::endl;
   for (EventList::iterator it = elist.begin(); it != elist.end(); it++) {
-    const Event *e = it->get();
-    std::cout << "  " << e->offset << "-" << (e->endOffset()-1)
-              << " " << e->str() << std::endl;
+    const Event &e = it->second;
+    std::cout << "  " << e.offset << "-" << e.endOffset()
+              << " " << e.str() << std::endl;
   }
 }
 
@@ -544,7 +552,7 @@ void EventSequence::minimize() {
     next++;
     if (next == elist.end()) break;
 
-    Event &e = **it, &n = **next;
+    Event &e = it->second, &n = next->second;
     if (e.canExtend(n)) {
       e.start_time = std::min(e.start_time, n.start_time);
       e.end_time = std::max(e.end_time, n.end_time);
@@ -563,48 +571,48 @@ void testEventSequence() {
   EventSequence s;
   EventSequence::EventList::iterator it;
 
-  s.addEvent(Event::create(10, 50));
-  s.addEvent(Event::create(20, 50));
+  s.addEvent(Event(10, 50));
+  s.addEvent(Event(20, 50));
   s.validate();
   s.print();
 
   assert(s.elist.size() == 3);
   it = s.elist.begin();
-  assert((*it)->offset == 10 && (*it)->length == 10);
+  assert(it->second.offset == 10 && it->second.length == 10);
   it++;
-  assert((*it)->offset == 20 && (*it)->length == 40);
+  assert(it->second.offset == 20 && it->second.length == 40);
   it++;
-  assert((*it)->offset == 60 && (*it)->length == 10);
+  assert(it->second.offset == 60 && it->second.length == 10);
   it++;
   assert(it == s.elist.end());
   s.clear();
 
-  s.addEvent(Event::create(10, 50));
-  s.addEvent(Event::create(20, 40));
+  s.addEvent(Event(10, 50));
+  s.addEvent(Event(20, 40));
   s.validate();
   s.print();
 
   assert(s.elist.size() == 2);
   it = s.elist.begin();
-  assert((*it)->offset == 10 && (*it)->length == 10);
+  assert(it->second.offset == 10 && it->second.length == 10);
   it++;
-  assert((*it)->offset == 20 && (*it)->length == 40);
+  assert(it->second.offset == 20 && it->second.length == 40);
   it++;
   assert(it == s.elist.end());
   s.clear();
 
-  s.addEvent(Event::create(10, 50));
-  s.addEvent(Event::create(20, 10));
+  s.addEvent(Event(10, 50));
+  s.addEvent(Event(20, 10));
   s.validate();
   s.print();
 
   assert(s.elist.size() == 3);
   it = s.elist.begin();
-  assert((*it)->offset == 10 && (*it)->length == 10);
+  assert(it->second.offset == 10 && it->second.length == 10);
   it++;
-  assert((*it)->offset == 20 && (*it)->length == 10);
+  assert(it->second.offset == 20 && it->second.length == 10);
   it++;
-  assert((*it)->offset == 30 && (*it)->length == 30);
+  assert(it->second.offset == 30 && it->second.length == 30);
   it++;
   assert(it == s.elist.end());
   s.clear();

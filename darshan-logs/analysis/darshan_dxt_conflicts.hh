@@ -23,16 +23,16 @@ public:
   double start_time, end_time;
 
   Event() {}
-  
-  // Event(int rank_) : rank(rank_) {}
 
   Event(int64_t offset_, int64_t length_)
     : rank(0), mode(WRITE), api(POSIX), offset(offset_), length(length_),
       start_time(0), end_time(0) {}
-  
+
+  /*
   static EventPtr create(int64_t offset, int64_t length) {
     return std::make_shared<Event>(offset, length);
   }
+  */
                                           
 
   Event(int rank_, enum Mode mode_, enum API api_,
@@ -44,7 +44,7 @@ public:
   std::string str() const {
     std::ostringstream buf;
     buf << "rank " << rank
-        << " bytes " << offset << ".." << (offset+length-1)
+        << " bytes " << offset << ".." << (offset+length)
         << " " << (api==POSIX ? "POSIX" : "MPIIO")
         << " " << (mode==READ ? "read" : "write")
         << " time " << std::fixed << std::setprecision(4) << start_time << ".." << end_time;
@@ -64,11 +64,11 @@ public:
 
   // Split this event into two (offset..split_offset), (split_offset..end)
   // Return the second one leaving this one's offset unchanged.
-  EventPtr split(int64_t split_offset) {
+  Event split(int64_t split_offset) {
     assert(split_offset >= offset && split_offset <= endOffset());
-    EventPtr e2 = std::make_shared<Event>(*this);
-    e2->offset = split_offset;
-    e2->length = this->endOffset() - split_offset;
+    Event e2(*this);
+    e2.offset = split_offset;
+    e2.length = this->endOffset() - split_offset;
     this->length = split_offset - offset;
     return e2;
   }
@@ -281,29 +281,30 @@ extend existing and throw away new one.
 // Order EventPtr objects by offset
 class EventsOrderByOffset {
 public:
-  bool operator () (const EventPtr &a, const EventPtr &b) const {
-    return a.get()->offset < b.get()->offset;
+  bool operator () (const Event &a, const Event &b) const {
+    return a.offset < b.offset;
   }
 };
 
   
 class EventSequence {
 public:
-  // typedef std::set<EventPtr, EventsOrderByOffset> EventList;
-  using EventList = std::set<EventPtr, EventsOrderByOffset>;
+  // offset -> Event
+  using EventList = std::map<int64_t, Event>;
+  
   EventList elist;
   std::string name;
 
   EventSequence(std::string name_ = "") : name(name_) {}
 
-  void addEvent(EventPtr e);
+  void addEvent(Event e);
 
   // store a copy of e
   // void addEvent(const Event &e);
 
   // Returns the first event in elist that overlaps e, or elist.end()
   // if no event overlaps e.
-  EventList::iterator firstOverlapping(const EventPtr &evt);
+  EventList::iterator firstOverlapping(const Event &evt);
   
   bool validate();
   void print();
@@ -342,8 +343,8 @@ public:
     }
   }
 
-  void addEvent(EventPtr &e) {
-    EventSequence *seq = getEventSequence(e->rank);
+  void addEvent(const Event &e) {
+    EventSequence *seq = getEventSequence(e.rank);
     seq->addEvent(e);
   }
 
