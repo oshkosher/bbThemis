@@ -11,6 +11,8 @@
 #include <algorithm>
 // #include <memory>
 
+class Event;
+using EventPtr = std::shared_ptr<Event>;
 
 class Event {
 public:
@@ -21,8 +23,17 @@ public:
   double start_time, end_time;
 
   Event() {}
+  
+  // Event(int rank_) : rank(rank_) {}
 
-  Event(int rank_) : rank(rank_) {}
+  Event(int64_t offset_, int64_t length_)
+    : rank(0), mode(WRITE), api(POSIX), offset(offset_), length(length_),
+      start_time(0), end_time(0) {}
+  
+  static EventPtr create(int64_t offset, int64_t length) {
+    return std::make_shared<Event>(offset, length);
+  }
+                                          
 
   Event(int rank_, enum Mode mode_, enum API api_,
         int64_t offset_, int64_t length_,
@@ -53,9 +64,9 @@ public:
 
   // Split this event into two (offset..split_offset), (split_offset..end)
   // Return the second one leaving this one's offset unchanged.
-  Event* split(int64_t split_offset) {
+  EventPtr split(int64_t split_offset) {
     assert(split_offset >= offset && split_offset <= endOffset());
-    Event *e2 = new Event(*this);
+    EventPtr e2 = std::make_shared<Event>(*this);
     e2->offset = split_offset;
     e2->length = this->endOffset() - split_offset;
     this->length = split_offset - offset;
@@ -67,6 +78,14 @@ public:
     if (e.mode != mode) {
       mode = WRITE;
     }
+  }
+
+
+  /* Returns true iff e is identical and adjacent (after) this event */
+  bool canExtend(const Event &e) {
+    return rank == e.rank
+      && mode == e.mode
+      && endOffset() == e.offset;
   }
 
 
@@ -162,7 +181,7 @@ public:
   }
 };
 
-typedef std::shared_ptr<Event> EventPtr;
+// typedef std::shared_ptr<Event> EventPtr;
 
 
 /*
@@ -260,7 +279,7 @@ extend existing and throw away new one.
 */
 
 // Order EventPtr objects by offset
-class EventPtrLT {
+class EventsOrderByOffset {
 public:
   bool operator () (const EventPtr &a, const EventPtr &b) const {
     return a.get()->offset < b.get()->offset;
@@ -270,290 +289,30 @@ public:
   
 class EventSequence {
 public:
-  typedef std::set<EventPtr, EventPtrLT> EventList;
+  // typedef std::set<EventPtr, EventsOrderByOffset> EventList;
+  using EventList = std::set<EventPtr, EventsOrderByOffset>;
   EventList elist;
+  std::string name;
 
-  void addEvent_old(EventPtr &e) {
-    validate();
+  EventSequence(std::string name_ = "") : name(name_) {}
 
-    std::cout << "Adding " << e.get()->str() << std::endl;
-    if (elist.empty()) {
-      elist.insert(e);
-      validate(); print();
-      return;
-    }
-    
-    // check if the initial offset of this event overlaps an existing one
-    // upper bound: first element such that element > value
-    //   first element that goes after
-    
-    // lower bound: first element such that it >= e
-    EventList::iterator next_it = elist.lower_bound(e);
-    assert(next_it==elist.end() || next_it->get()->offset >= e->offset);
-    
-    if (next_it != elist.end()) {
-      std::cout << "lower bound = " << next_it->get()->str() << std::endl;
-    }                
+  void addEvent(EventPtr e);
 
-    if (next_it != elist.begin()) {
-      EventList::iterator prev_it = next_it;
-      prev_it--;
-      Event *prev = prev_it->get();
-        
-      std::cout << "prev = " << prev->str() << std::endl;
-      
-      assert(prev->offset < e->offset);
-      if (prev->endOffset() > e->offset) {
-
-        /* e starts during prev. Split prev at e.offset and start over,
-           regardless of where e.end is.
-             prev  |---------|
-             e1       |------|
-             e2       |---------|
-             e3       |---|
-
-             prev1 |--|
-             prev2    |------|
-         */
-
-        EventPtr prev_remainder(prev->split(e->offset));
-
-        std::pair<EventList::iterator,bool> insert_result =
-          elist.insert(prev_remainder);
-        // check that insertion worked as expected
-        assert(insert_result.second == true);
-        assert(insert_result.first->get() == prev_remainder.get());
-
-        next_it = insert_result.first;
-      }
-    }
-
-    // append e
-    if (next_it == elist.end()) {
-      elist.insert(e);
-      validate(); print();
-      return;
-    }
-
-    while (e) {
-      EventPtr e_remainder(nullptr);
-      Event *next = next_it->get();
-      assert(next);
-      assert(next->offset >= e->offset);
-
-      // next starts at or after e
-
-      // e starts before next
-      if (e->offset < next->offset) {
-      
-        // if there's no overlap we're done
-        // XXX make a method for this, endsBefore()?
-        if (e->endOffset() <= next->offset) {
-          elist.insert(e);
-          validate(); print();
-          return;
-        }
-
-        // otherwise there's overlap and e needs to be split
-        e_remainder.reset(e->split(next->offset));
-        elist.insert(e);
-
-        // continue with e_remainder, which shares a start with next
-        e = e_remainder;
-        e_remainder.reset();
-      }
-        
-      assert(e->offset == next->offset);
-
-      // if e and next are different lengths, trim the longer one
-      if (e->length > next->length) {
-        e_remainder.reset(e->split(next->endOffset()));
-      } else if (next->length > e->length) {
-        EventPtr next_remainder(next->split(e->endOffset()));
-        elist.insert(next_remainder);
-      }
-        
-      assert(e->offset == next->offset);
-      assert(e->length == next->length);
-      next->mergeMode(*e);
-
-      e.reset();
-      e.swap(e_remainder);
-    }
-
-    validate();
-    print();
-  }
-
-
-
-  void addEvent(EventPtr &e) {
-    validate();
-
-    std::cout << "Adding " << e.get()->str() << std::endl;
-
-    EventList::iterator overlap_it = firstOverlapping(e);
-    if (overlap_it == elist.end()) {
-      elist.insert(e);
-      validate();
-      print();
-      return;
-    }
-
-    // Event *overlap = overlap_it->get();
-    // Event *overlap = **overlap_it;
-
-    if (overlap_it->get()->offset < e->offset) {
-      assert(e->offset < overlap_it->get()->endOffset());
-      
-      /* e starts during overlap. Split off the nonoverlapping part of overlap
-
-         overlap  |---------|
-         e1          |------|
-         e2          |---------|
-         e3          |---|
-
-         overlap  |--|
-         overlap2    |------|
-      */
-
-      EventPtr overlap_remainder(overlap_it->get()->split(e->offset));
-
-      std::pair<EventList::iterator,bool> insert_result =
-        elist.insert(overlap_remainder);
-      // check that insertion worked as expected
-      assert(insert_result.second == true);
-      assert(insert_result.first->get() == overlap_remainder.get());
-
-      overlap_it = insert_result.first;
-    }
-
-    while (e) {
-      EventPtr e_remainder(nullptr);
-      Event *next = overlap_it->get();
-      assert(next);
-      assert(next->offset >= e->offset);
-
-      // next starts at or after e
-
-      // e starts before next
-      if (e->offset < next->offset) {
-      
-        // if there's no overlap we're done
-        if (next->startsAfter(*e)) {
-          elist.insert(e);
-          e.reset();
-          continue;
-        }
-
-        // otherwise there's overlap and e needs to be split
-        e_remainder.reset(e->split(next->offset));
-        elist.insert(e);
-
-        // continue with e_remainder, which shares a start with next
-        e = e_remainder;
-        e_remainder.reset();
-      }
-
-      // remaining case: e and next start at the same offset
-      assert(e->offset == next->offset);
-
-      // if e and next are different lengths, trim the longer one
-      if (e->length > next->length) {
-        e_remainder.reset(e->split(next->endOffset()));
-      } else if (next->length > e->length) {
-        EventPtr next_remainder(next->split(e->endOffset()));
-        elist.insert(next_remainder);
-      }
-        
-      assert(e->offset == next->offset);
-      assert(e->length == next->length);
-      next->mergeMode(*e);
-
-      e.reset();
-      e.swap(e_remainder);
-    }
-
-    validate();
-    print();
-  }
-  
+  // store a copy of e
+  // void addEvent(const Event &e);
 
   // Returns the first event in elist that overlaps e, or elist.end()
   // if no event overlaps e.
-  EventList::iterator firstOverlapping(const EventPtr &evt) {
-    EventList::iterator next, prev;
-    
-    /* quick checks. There is no overlap if:
-       - the list is empty
-       - evt finishes before the first element starts
-       - evt begins after the last element finishes
-    */
-    if (elist.empty()
-        || (*elist.begin())->startsAfter(*evt)
-        || evt->startsAfter(**elist.rbegin())) {
-      return elist.end();
-    }
-    
-    // get the first element such that it >= evt
-    next = elist.lower_bound(evt);
-
-    // if next is not the first element in the list, check for an overlap
-    // with the element before it
-    if (next != elist.begin()) {
-      EventList::iterator prev = next;
-      prev--;
-      // if evt overlaps prev, then prev is the first overlapping event
-      assert((*prev)->offset < evt->offset);
-      if (!evt->startsAfter(**prev)) {
-        return prev;
-      }
-    }
-    
-    // the only remaining possible overlap is that evt overlaps next
-    if ((*next)->startsAfter(*evt)) {
-      return elist.end();
-    }
-
-    assert(evt->overlaps(**next));
-    return next;
-  }
-
+  EventList::iterator firstOverlapping(const EventPtr &evt);
   
-  bool validate() {
-    // EventList::iterator it;
-    const Event *prev = nullptr;
+  bool validate();
+  void print();
 
-    for (EventList::iterator it = elist.begin(); it != elist.end(); it++) {
-      const Event *e = it->get();
-      if (prev) {
-        if (e->offset <= prev->offset) {
-          std::cerr << "Error out of order events (" << prev->str() << ") and ("
-                    << e->str() << ")\n";
-          return false;
-        }
+  // join adjacent events with matching types
+  void minimize();
 
-        if (e->offset < prev->endOffset()) {
-          std::cerr << "Overlapping events (" << prev->str() << ") and ("
-                    << e->str() << ")\n";
-          return false;
-        }
-      }
-      prev = e;
-    }
-    return true;
-  }
-
-
-  void print() {
-    std::cout << "EventSequence\n";
-    for (EventList::iterator it = elist.begin(); it != elist.end(); it++) {
-      const Event *e = it->get();
-      std::cout << "  " << e->offset << "-" << (e->endOffset()-1)
-                << " " << e->str() << std::endl;
-    }
-  }
-    
+  // remove all events
+  void clear() {elist.clear();}
 
 };
 
@@ -573,7 +332,9 @@ public:
   EventSequence* getEventSequence(int rank) {
     std::map<int,EventSequencePtr>::iterator it = rank_seq.find(rank);
     if (it == rank_seq.end()) {
-      EventSequence *seq = new EventSequence();
+      std::string seq_name = std::string("rank=") + std::to_string(rank)
+        + " filename=" + name;
+      EventSequence *seq = new EventSequence(seq_name);
       rank_seq[rank] = std::unique_ptr<EventSequence>(seq);
       return seq;
     } else {
