@@ -24,8 +24,8 @@ public:
 
   Event() {}
 
-  Event(int64_t offset_, int64_t length_)
-    : rank(0), mode(WRITE), api(POSIX), offset(offset_), length(length_),
+  Event(int64_t offset_, int64_t length_, int mode_ = WRITE)
+    : rank(0), mode((Mode)mode_), api(POSIX), offset(offset_), length(length_),
       start_time(0), end_time(0) {}
 
   /*

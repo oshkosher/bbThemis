@@ -355,15 +355,14 @@ void scanForConflicts(File *f) {
 
 
 void EventSequence::addEvent(Event e) {
-  validate();
+  assert(validate());
 
-  std::cout << "Adding " << e.str() << std::endl;
+  // std::cout << "Adding " << e.str() << std::endl;
 
   EventList::iterator overlap_it = firstOverlapping(e);
   if (overlap_it == elist.end()) {
     elist[e.offset] = e;
-    validate();
-    print();
+    assert(validate());
     return;
   }
 
@@ -453,8 +452,7 @@ void EventSequence::addEvent(Event e) {
     next_it++;
   }
 
-  validate();
-  print();
+  assert(validate());
 }
 
 
@@ -562,58 +560,175 @@ void EventSequence::minimize() {
       it = next;
     }
     validate();
-    print();
+    // print();
   }
 }
+
+static void initSequence(EventSequence &s,
+                         const vector<int64_t> &bound_pairs) {
+  s.clear();
+  for (size_t i=0; i < bound_pairs.size(); i+= 2) {
+    s.addEvent(Event(bound_pairs[i], bound_pairs[i+1] - bound_pairs[i]));
+  }
+}
+
+static void initSequence2(EventSequence &s,
+                         const vector<int64_t> &bound_pairs) {
+  s.clear();
+  for (size_t i=0; i < bound_pairs.size(); i+= 3) {
+    s.addEvent(Event(bound_pairs[i], bound_pairs[i+1] - bound_pairs[i],
+                     bound_pairs[i+2]));
+  }
+}
+
+static void checkSequence(const EventSequence &s,
+                          const vector<int64_t> &bound_pairs) {
+  size_t i = 0;
+  assert(s.elist.size() == bound_pairs.size()/2);
+  EventSequence::EventList::const_iterator it = s.elist.begin();
+  while (it != s.elist.end()) {
+    assert(it->first == bound_pairs[i]
+           && it->second.endOffset() == bound_pairs[i+1]);
+    i += 2;
+    it++;
+  }
+}
+
+static void checkSequence2(const EventSequence &s,
+                          const vector<int64_t> &bound_pairs) {
+  size_t i = 0;
+  assert(s.elist.size() == bound_pairs.size()/3);
+  EventSequence::EventList::const_iterator it = s.elist.begin();
+  while (it != s.elist.end()) {
+    assert(it->first == bound_pairs[i]
+           && it->second.endOffset() == bound_pairs[i+1]);
+    assert(it->second.mode == (Event::Mode)bound_pairs[i+2]);
+    i += 3;
+    it++;
+  }
+}
+  
 
 
 void testEventSequence() {
   EventSequence s;
   EventSequence::EventList::iterator it;
 
-  s.addEvent(Event(10, 50));
-  s.addEvent(Event(20, 50));
-  s.validate();
-  s.print();
+  // |rrrrrr|
+  //    |wwwwwww|
+  {
+    vector<int64_t> in {10, 60, Event::READ, 20, 70, Event::WRITE};
+    vector<int64_t> out {10, 20, Event::READ, 20, 60, Event::WRITE,
+                          60, 70, Event::WRITE};
+    initSequence2(s, in);
+    s.print();
+    checkSequence2(s, out);
+  }
 
-  assert(s.elist.size() == 3);
-  it = s.elist.begin();
-  assert(it->second.offset == 10 && it->second.length == 10);
-  it++;
-  assert(it->second.offset == 20 && it->second.length == 40);
-  it++;
-  assert(it->second.offset == 60 && it->second.length == 10);
-  it++;
-  assert(it == s.elist.end());
-  s.clear();
+  // |wwwwwww|
+  //    |rrrrrrrr|
+  {
+    vector<int64_t> in {10, 60, Event::WRITE, 20, 70, Event::READ};
+    vector<int64_t> out {10, 20, Event::WRITE, 20, 60, Event::WRITE,
+                          60, 70, Event::READ};
+    initSequence2(s, in);
+    s.print();
+    checkSequence2(s, out);
+  }
 
-  s.addEvent(Event(10, 50));
-  s.addEvent(Event(20, 40));
-  s.validate();
-  s.print();
+  // |------|
+  //    |---|
+  {
+    vector<int64_t> in {10, 50, 20, 50};
+    vector<int64_t> out {10, 20, 20, 50};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
 
-  assert(s.elist.size() == 2);
-  it = s.elist.begin();
-  assert(it->second.offset == 10 && it->second.length == 10);
-  it++;
-  assert(it->second.offset == 20 && it->second.length == 40);
-  it++;
-  assert(it == s.elist.end());
-  s.clear();
+  // |-------|
+  //    |--|
+  {
+    vector<int64_t> in {10, 50, 20, 30};
+    vector<int64_t> out {10, 20, 20, 30, 30, 50};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
 
-  s.addEvent(Event(10, 50));
-  s.addEvent(Event(20, 10));
-  s.validate();
-  s.print();
 
-  assert(s.elist.size() == 3);
-  it = s.elist.begin();
-  assert(it->second.offset == 10 && it->second.length == 10);
-  it++;
-  assert(it->second.offset == 20 && it->second.length == 10);
-  it++;
-  assert(it->second.offset == 30 && it->second.length == 30);
-  it++;
-  assert(it == s.elist.end());
-  s.clear();
+  // |-------|
+  // |--|
+  {
+    vector<int64_t> in {10, 50, 10, 30};
+    vector<int64_t> out {10, 30, 30, 50};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
+
+
+  // |-------|
+  // |-------|
+  {
+    vector<int64_t> in {10, 50, 10, 50};
+    vector<int64_t> out {10, 50};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
+
+  // |-------|
+  // |------------|
+  {
+    vector<int64_t> in {10, 50, 10, 100};
+    vector<int64_t> out {10, 50, 50, 100};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
+
+  // |-------|
+  //     |------------|
+  {
+    vector<int64_t> in {10, 50, 20, 80};
+    vector<int64_t> out {10, 20, 20, 50, 50, 80};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
+
+
+  // |-------|
+  //             |------------|
+  {
+    vector<int64_t> in {10, 50, 80, 100};
+    vector<int64_t> out {10, 50, 80, 100};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
+
+
+  //             |------------|
+  // |-------|
+  {
+    vector<int64_t> in {80, 100, 10, 50};
+    vector<int64_t> out {10, 50, 80, 100};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
+
+
+  //   |--|  |--|  |--|
+  // |-------------------|
+  {
+    vector<int64_t> in {10, 20, 30, 40, 50, 60, 0, 70};
+    vector<int64_t> out {0, 10, 10, 20, 20, 30, 30, 40, 40, 50, 50, 60, 60, 70};
+    initSequence(s, in);
+    s.print();
+    checkSequence(s, out);
+  }
+  
 }
