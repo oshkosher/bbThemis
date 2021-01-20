@@ -11,8 +11,8 @@
 #include <algorithm>
 // #include <memory>
 
-class Event;
-using EventPtr = std::shared_ptr<Event>;
+// class Event;
+// using EventPtr = std::shared_ptr<Event>;
 
 class Event {
 public:
@@ -27,13 +27,6 @@ public:
   Event(int64_t offset_, int64_t length_, int mode_ = WRITE)
     : rank(0), mode((Mode)mode_), api(POSIX), offset(offset_), length(length_),
       start_time(0), end_time(0) {}
-
-  /*
-  static EventPtr create(int64_t offset, int64_t length) {
-    return std::make_shared<Event>(offset, length);
-  }
-  */
-                                          
 
   Event(int rank_, enum Mode mode_, enum API api_,
         int64_t offset_, int64_t length_,
@@ -50,7 +43,6 @@ public:
         << " time " << std::fixed << std::setprecision(4) << start_time << ".." << end_time;
     return buf.str();
   }
-
 
   // return the offset after the last byte of this access
   int64_t endOffset() const {return offset + length;}
@@ -181,102 +173,6 @@ public:
   }
 };
 
-// typedef std::shared_ptr<Event> EventPtr;
-
-
-/*
-class EventCompareEndOffset {
-public:
-  bool operator()(const Event &a, const Event &b) const {
-    return (a.offset + a.length) < (b.offset + b.length);
-  }
-};
-*/
-
-
-/* Encapsulates all the accesses of a file made by one rank.
-   It condenses a sequence of events into one nonoverlapping sequence
-   of events, each of which is read-only, write-only, or read-write.
-
-   Adjacent events of the same type are combined:
-     read(10..19) + read(20..29) -> read(10..29)
-   An overlapping event of a different type splits the event into
-   multiple events:
-     read(0..99) + write(40..49) -> read(0..39), readwrite(40..49), read(50..99)
-
-   The start and end time of events are discarded, because they are not
-   useful for determining sychronization across processors. For example,
-   if a write occurs on process 0 at 10 seconds and a read occurs on process 1
-   at 11 seconds, we can't assume the results of the write were visible to
-   the read.
-
-   Merge algorithm
-     new:     |w-----------------------|       // a write event
-     existing:    |r-----|  |w-------------|   // a read then a write
-   1. Split the new event into multiple events such that no event spans the
-      beginning or end of an existing event.
-     new:     |w--|w-----|w-|----------|
-     existing:    |r-----|  |w---------|w--|
-   2. Merge overlapping events.
-              |w--|rw----|w-|w---------|w--|
-   3. Merge matching adjacent events.
-              |w--|rw----|w----------------|
-
-   Note that the x-axis in these diagrams represent byte ranges in the file,
-   not time ranges.
-
-   Incremental algorithm
-     new:     |w-----------------------|       // a write event
-     existing:    |r-----|  |w-------------|   // a read then a write
-   1. Find the first existing event that might overlap; the least one
-      with old.end >= new.offset.
-   2. Continue adjacent. If old.end == new.offset and the types match,
-
-   2. If new.offset < old.offset
-   2. Cases:
-      a) New event ends before the existing one starts. (new.end < old.offset)
-             |---|  new
-                   |---| existing
-         Add the new one to the list. 
-      b) New event ends exactly where the existing one starts
-         (new.end == old.offset)
-             |---|  new
-                 |---| existing
-         If they have the same type, extend the existing one and 
-         throw away the new one. Otherwise add the new one.
-      c) Left overlap
-             |------|  new
-                 |-----| existing
-         If same type, extend existing and throw away new one.
-         Otherwise, shorten both and add a third for the overlap
-             |w--|rw|r-| existing
-      d) Right aligned
-             |r--------|  new
-                 |w----| existing
-         If same type, extend existing and throw away new one.
-         Otherwise, shorten the new one and change the existing
-         to the combined type.
-             |r--|rw---|
-      e) Double overlap
-             |-------------|  new
-                 |-----|      existing
-         If same type, trim the new one to the end of the existing,
-         extend the beginning of the existing, and check the next existing.
-                       |---|  new
-                 |-----|      existing
-
-extend existing and throw away new one.
-         Otherwise, shorten the new one and change the existing
-         to the combined type.
-             |r--|rw---|
-
-         
-
-         
-
-
-
-*/
 
 // Order EventPtr objects by offset
 class EventsOrderByOffset {
@@ -286,25 +182,83 @@ public:
   }
 };
 
+
+struct SeqEvent {
+  int64_t offset, length;
+  Event::Mode mode;
+
+  SeqEvent() : offset(0), length(0), mode(Event::Mode::READ) {}
   
+  SeqEvent(const Event &e)
+    : offset(e.offset), length(e.length), mode(e.mode) {}
+
+  int64_t endOffset() const {return offset + length;}
+
+  std::string str() const {
+    std::ostringstream buf;
+    buf << "bytes " << offset << ".." << (offset+length)
+        << " " << (mode==Event::Mode::READ ? "read" : "write");
+    return buf.str();
+  }    
+  
+  
+  // this event starts after the given event finishes
+  bool startsAfter(const SeqEvent &x) const {
+    return offset >= x.endOffset();
+  }
+
+
+  bool overlaps(const SeqEvent &other) const {
+    return (offset < other.endOffset())
+      && (endOffset() > other.offset);
+  }
+
+
+  /* Returns true iff e is identical and adjacent (after) this event */
+  bool canExtend(const SeqEvent &e) {
+    return mode == e.mode
+      && endOffset() == e.offset;
+  }
+
+
+  void mergeMode(const SeqEvent &e) {
+    if (e.mode != mode) {
+      mode = Event::Mode::WRITE;
+    }
+  }
+
+
+  // Split this event into two (offset..split_offset), (split_offset..end)
+  // Return the second one leaving this one's offset unchanged.
+  SeqEvent split(int64_t split_offset) {
+    assert(split_offset >= offset && split_offset <= endOffset());
+    SeqEvent e2(*this);
+    e2.offset = split_offset;
+    e2.length = this->endOffset() - split_offset;
+    this->length = split_offset - offset;
+    return e2;
+  }
+};
+
+
 class EventSequence {
 public:
   // offset -> Event
-  using EventList = std::map<int64_t, Event>;
+  using EventList = std::map<int64_t, SeqEvent>;
   
   EventList elist;
   std::string name;
 
   EventSequence(std::string name_ = "") : name(name_) {}
 
-  void addEvent(Event e);
+  void addEvent(const Event &e);
 
   // store a copy of e
   // void addEvent(const Event &e);
 
   // Returns the first event in elist that overlaps e, or elist.end()
   // if no event overlaps e.
-  EventList::iterator firstOverlapping(const Event &evt);
+  EventList::iterator firstOverlapping(const SeqEvent &evt);
   
   bool validate();
   void print();
@@ -314,6 +268,11 @@ public:
 
   // remove all events
   void clear() {elist.clear();}
+
+private:
+  EventList::iterator insert(const SeqEvent &e) {
+    return elist.insert( std::pair<int64_t,SeqEvent> (e.offset, e) ).first;
+  }
 
 };
 

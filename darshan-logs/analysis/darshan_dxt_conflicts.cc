@@ -354,14 +354,16 @@ void scanForConflicts(File *f) {
 
 
 
-void EventSequence::addEvent(Event e) {
+void EventSequence::addEvent(const Event &full_event) {
   assert(validate());
+
+  SeqEvent e(full_event);
 
   // std::cout << "Adding " << e.str() << std::endl;
 
   EventList::iterator overlap_it = firstOverlapping(e);
   if (overlap_it == elist.end()) {
-    elist[e.offset] = e;
+    insert(e);
     assert(validate());
     return;
   }
@@ -380,12 +382,9 @@ void EventSequence::addEvent(Event e) {
        overlap2    |------|
     */
 
-    Event overlap_remainder = overlap_it->second.split(e.offset);
+    SeqEvent overlap_remainder = overlap_it->second.split(e.offset);
 
-    std::pair<EventList::iterator,bool> insert_result =
-      elist.insert( std::pair<int64_t,Event>(overlap_remainder.offset,
-                                             overlap_remainder) );
-    overlap_it = insert_result.first;
+    overlap_it = insert(overlap_remainder);
   }
 
   EventList::iterator next_it = overlap_it;
@@ -397,11 +396,11 @@ void EventSequence::addEvent(Event e) {
 
     // if e is past the end of existing elements just insert it
     if (next_it == elist.end()) {
-      elist[e.offset] = e;
+      insert(e);
       break;
     }
     
-    Event &next = next_it->second;
+    SeqEvent &next = next_it->second;
     assert(next.offset >= e.offset);
     assert(next.offset < e.endOffset());
 
@@ -410,13 +409,13 @@ void EventSequence::addEvent(Event e) {
       
       // if there's no overlap we're done
       if (next.startsAfter(e)) {
-        elist[e.offset] = e;
+        insert(e);
         break;
       }
 
       // otherwise there's overlap and e needs to be split
-      Event tmp = e.split(next.offset);
-      elist[e.offset] = e;
+      SeqEvent tmp = e.split(next.offset);
+      insert(e);
 
       // continue with the remainder, which shares a start with next
       e = tmp;
@@ -425,7 +424,7 @@ void EventSequence::addEvent(Event e) {
     // remaining case: e and next start at the same offset
     assert(e.offset == next.offset);
 
-    Event e_leftover(0, 0);
+    SeqEvent e_leftover;
     
     // if e and next are different lengths, trim the longer one
     if (e.length > next.length) {
@@ -433,8 +432,7 @@ void EventSequence::addEvent(Event e) {
       e_leftover = e.split(next.endOffset());
     } else if (next.length > e.length) {
       // next is longer, split it, merge e, and finish
-      Event tmp = next.split(e.endOffset());
-      elist[tmp.offset] = tmp;
+      insert(next.split(e.endOffset()));
     }
     
     assert(e.offset == next.offset);
@@ -456,7 +454,8 @@ void EventSequence::addEvent(Event e) {
 }
 
 
-EventSequence::EventList::iterator EventSequence::firstOverlapping(const Event &evt) {
+EventSequence::EventList::iterator EventSequence::firstOverlapping
+(const SeqEvent &evt) {
   EventList::iterator next, prev;
     
   /* quick checks. There is no overlap if:
@@ -505,7 +504,7 @@ bool EventSequence::validate() {
 
   while (it != elist.end()) {
 
-    const Event &prev = prev_it->second, &e = it->second;
+    const SeqEvent &prev = prev_it->second, &e = it->second;
     assert(prev.offset == prev_it->first);
     assert(e.offset == it->first);
 
@@ -532,7 +531,7 @@ bool EventSequence::validate() {
 void EventSequence::print() {
   std::cout << "EventSequence " << name << std::endl;
   for (EventList::iterator it = elist.begin(); it != elist.end(); it++) {
-    const Event &e = it->second;
+    const SeqEvent &e = it->second;
     std::cout << "  " << e.offset << "-" << e.endOffset()
               << " " << e.str() << std::endl;
   }
@@ -540,7 +539,7 @@ void EventSequence::print() {
 
 
 void EventSequence::minimize() {
-  cout << "EventSequence::minimize()\n";
+  // cout << "EventSequence::minimize()\n";
   if (elist.size() <= 1) return;
   
   EventList::iterator it = elist.begin();
@@ -550,10 +549,8 @@ void EventSequence::minimize() {
     next++;
     if (next == elist.end()) break;
 
-    Event &e = it->second, &n = next->second;
+    SeqEvent &e = it->second, &n = next->second;
     if (e.canExtend(n)) {
-      e.start_time = std::min(e.start_time, n.start_time);
-      e.end_time = std::max(e.end_time, n.end_time);
       e.length += n.length;
       elist.erase(next);
     } else {
@@ -573,7 +570,7 @@ static void initSequence(EventSequence &s,
 }
 
 static void initSequence2(EventSequence &s,
-                         const vector<int64_t> &bound_pairs) {
+                          const vector<int64_t> &bound_pairs) {
   s.clear();
   for (size_t i=0; i < bound_pairs.size(); i+= 3) {
     s.addEvent(Event(bound_pairs[i], bound_pairs[i+1] - bound_pairs[i],
@@ -595,7 +592,7 @@ static void checkSequence(const EventSequence &s,
 }
 
 static void checkSequence2(const EventSequence &s,
-                          const vector<int64_t> &bound_pairs) {
+                           const vector<int64_t> &bound_pairs) {
   size_t i = 0;
   assert(s.elist.size() == bound_pairs.size()/3);
   EventSequence::EventList::const_iterator it = s.elist.begin();
@@ -621,7 +618,6 @@ void testEventSequence() {
     vector<int64_t> out {10, 20, Event::READ, 20, 60, Event::WRITE,
                           60, 70, Event::WRITE};
     initSequence2(s, in);
-    s.print();
     checkSequence2(s, out);
   }
 
@@ -632,7 +628,6 @@ void testEventSequence() {
     vector<int64_t> out {10, 20, Event::WRITE, 20, 60, Event::WRITE,
                           60, 70, Event::READ};
     initSequence2(s, in);
-    s.print();
     checkSequence2(s, out);
   }
 
@@ -642,8 +637,10 @@ void testEventSequence() {
     vector<int64_t> in {10, 50, 20, 50};
     vector<int64_t> out {10, 20, 20, 50};
     initSequence(s, in);
-    s.print();
     checkSequence(s, out);
+    vector<int64_t> out2 {10, 50};
+    s.minimize();
+    checkSequence(s, out2);
   }
 
   // |-------|
@@ -652,10 +649,11 @@ void testEventSequence() {
     vector<int64_t> in {10, 50, 20, 30};
     vector<int64_t> out {10, 20, 20, 30, 30, 50};
     initSequence(s, in);
-    s.print();
     checkSequence(s, out);
+    vector<int64_t> out2 {10, 50};
+    s.minimize();
+    checkSequence(s, out2);
   }
-
 
   // |-------|
   // |--|
@@ -663,10 +661,8 @@ void testEventSequence() {
     vector<int64_t> in {10, 50, 10, 30};
     vector<int64_t> out {10, 30, 30, 50};
     initSequence(s, in);
-    s.print();
     checkSequence(s, out);
   }
-
 
   // |-------|
   // |-------|
@@ -674,7 +670,6 @@ void testEventSequence() {
     vector<int64_t> in {10, 50, 10, 50};
     vector<int64_t> out {10, 50};
     initSequence(s, in);
-    s.print();
     checkSequence(s, out);
   }
 
@@ -684,7 +679,6 @@ void testEventSequence() {
     vector<int64_t> in {10, 50, 10, 100};
     vector<int64_t> out {10, 50, 50, 100};
     initSequence(s, in);
-    s.print();
     checkSequence(s, out);
   }
 
@@ -694,10 +688,11 @@ void testEventSequence() {
     vector<int64_t> in {10, 50, 20, 80};
     vector<int64_t> out {10, 20, 20, 50, 50, 80};
     initSequence(s, in);
-    s.print();
     checkSequence(s, out);
+    vector<int64_t> out2 {10, 80};
+    s.minimize();
+    checkSequence(s, out2);
   }
-
 
   // |-------|
   //             |------------|
@@ -705,21 +700,45 @@ void testEventSequence() {
     vector<int64_t> in {10, 50, 80, 100};
     vector<int64_t> out {10, 50, 80, 100};
     initSequence(s, in);
-    s.print();
+    checkSequence(s, out);
+    s.minimize();
     checkSequence(s, out);
   }
-
-
+  
   //             |------------|
   // |-------|
   {
     vector<int64_t> in {80, 100, 10, 50};
     vector<int64_t> out {10, 50, 80, 100};
     initSequence(s, in);
-    s.print();
+    checkSequence(s, out);
+    s.minimize();
     checkSequence(s, out);
   }
-
+  
+  //         |------------|
+  // |-------|
+  {
+    vector<int64_t> in {50, 100, 10, 50};
+    vector<int64_t> out {10, 50, 50, 100};
+    initSequence(s, in);
+    checkSequence(s, out);
+    vector<int64_t> out2 {10, 100};
+    s.minimize();
+    checkSequence(s, out2);
+  }
+  
+  // |-------|
+  //         |------------|
+  {
+    vector<int64_t> in {10, 50, 50, 100};
+    vector<int64_t> out {10, 50, 50, 100};
+    initSequence(s, in);
+    checkSequence(s, out);
+    vector<int64_t> out2 {10, 100};
+    s.minimize();
+    checkSequence(s, out2);
+  }
 
   //   |--|  |--|  |--|
   // |-------------------|
@@ -727,8 +746,31 @@ void testEventSequence() {
     vector<int64_t> in {10, 20, 30, 40, 50, 60, 0, 70};
     vector<int64_t> out {0, 10, 10, 20, 20, 30, 30, 40, 40, 50, 50, 60, 60, 70};
     initSequence(s, in);
-    s.print();
     checkSequence(s, out);
+    s.minimize();
+    vector<int64_t> out2 {0, 70};
+    checkSequence(s, out2);
   }
-  
+
+  //   |ww|  |rr|  |ww|
+  // |rrrrrrrrrrrrrrrrrr|
+  //1|r|ww|rr|rr|rr|ww|r|
+  //2|r|ww|rrrrrrrr|ww|r|
+  {
+    vector<int64_t> in {10, 20, Event::WRITE, 30, 40, Event::READ,
+                        50, 60, Event::WRITE, 0, 70, Event::READ};
+    vector<int64_t> out {0, 10, Event::READ, 10, 20, Event::WRITE,
+                         20, 30, Event::READ, 30, 40, Event::READ,
+                         40, 50, Event::READ, 50, 60, Event::WRITE,
+                         60, 70, Event::READ};
+    initSequence2(s, in);
+    checkSequence2(s, out);
+    s.minimize();
+    vector<int64_t> out2 {0, 10, Event::READ, 10, 20, Event::WRITE,
+                         20, 50, Event::READ, 50, 60, Event::WRITE,
+                         60, 70, Event::READ};
+    checkSequence2(s, out2);
+  }
+
+  cout << "OK\n";
 }
