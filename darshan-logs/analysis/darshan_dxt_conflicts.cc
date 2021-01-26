@@ -70,9 +70,11 @@ int Event::block_size = 1;
 // Use the hash rather than the path, because the path is
 // often truncated in Darshan, leading to collisions that would probably
 // be avoided when using the 64-bit hash of the full path.
-typedef unordered_map<std::string, unique_ptr<File>> FileTableType;
+// typedef unordered_map<std::string, unique_ptr<File>> FileTableType;
+typedef map<std::string, unique_ptr<File>> FileTableType;
 
-int readDarshanDxtInput(istream &in, FileTableType &file_table);
+int readDarshanDxtInput(istream &in, FileTableType &file_table,
+                        LineReader &line_reader);
 bool parseEventLine(Event &e, const string &line);
 void writeData(const FileTableType &file_table);
 void scanForConflicts(File *f);
@@ -88,18 +90,27 @@ int main(int argc, char **argv) {
   return 0;
 #endif
 
-  // Event a(0, Event::READ, 0, 100, 1.0, 1.25);
-  // cout << a.offset << ".." << (a.offset + a.length - 1) << endl;
+  if (argc == 1) {
+    cerr << "\n  darshan_dxt_conflicts <input_dxt_file> [...]\n\n";
+    exit(1);
+  }
 
-  // ifstream inf("sample_dxt_mpiio.txt");
-  ifstream inf("sample.dxt");
-  readDarshanDxtInput(inf, file_table);
-  // readDarshanDxtInput(cin, file_table);
+  LineReader line_reader(5000);
+  for (int argno=1; argno < argc; argno++) {
+    ifstream inf(argv[argno]);
+    readDarshanDxtInput(inf, file_table, line_reader);
+  }
+  line_reader.done();
 
-  // writeData(file_table);
-
+  // scan files in name order
+  vector<File*> files_by_name;
   for (auto &file_it : file_table) {
-    File *f = file_it.second.get();
+    files_by_name.push_back(file_it.second.get());
+  }
+  sort(files_by_name.begin(), files_by_name.end(),
+       [](File *a, File *b) {return a->name < b->name;});
+  
+  for (File *f : files_by_name) {
     scanForConflicts(f);
   }
 
@@ -108,7 +119,8 @@ int main(int argc, char **argv) {
 }
 
 
-int readDarshanDxtInput(istream &in, FileTableType &file_table) {
+int readDarshanDxtInput(istream &in, FileTableType &file_table,
+                        LineReader &line_reader) {
   string line;
 
   regex section_header_re("^# DXT, file_id: ([0-9]+), file_name: (.*)$");
@@ -121,7 +133,7 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table) {
     // skip until the beginning of a section is found
     bool section_found = false;
     while (true) {
-      if (!getline(in, line)) break;
+      if (!line_reader.getline(in, line)) break;
       if (regex_search(line, re_matches, section_header_re)) {
         section_found = true;
         break;
@@ -136,7 +148,7 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table) {
     File *current_file;
     FileTableType::iterator ftt_iter = file_table.find(file_id_str);
     if (ftt_iter == file_table.end()) {
-      cout << "First instance of " << file_name << endl;
+      // cout << "First instance of " << file_name << endl;
       current_file = new File(file_id_str, file_name);
       file_table[file_id_str] = unique_ptr<File>(current_file);
     } else {
@@ -146,7 +158,7 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table) {
     // find the line with the rank id
     bool rank_found = false;
     while (true) {
-      if (!getline(in, line)) break;
+      if (!line_reader.getline(in, line)) break;
       if (regex_search(line, re_matches, rank_line_re)) {
         rank_found = true;
         break;
@@ -154,14 +166,14 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table) {
     }
     if (!rank_found) break;
 
-    int rank = stoi(re_matches[1]);
+    // int rank = stoi(re_matches[1]);
 
-    cout << "reading rank " << rank << " " << file_name << endl;
+    // cout << "reading rank " << rank << " " << file_name << endl;
 
     // read until a blank line at the end of the section or EOF
     bool is_eof = false;
     while (true) {
-      if (!getline(in, line)) break;
+      if (!line_reader.getline(in, line)) break;
       if (line.length() == 0) {
         // cout << "End of section\n";
         break;
@@ -173,24 +185,32 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table) {
         cerr << "Unrecognized line: " << line << endl;
       } else {
         // cout << event.str() << endl;
-        // current_file->events.insert(*event);
-        current_file->addEvent(event);
-        // cout << current_file->events.size() << endl;
+
+        // ignore events with an invalid offset
+        if (event.offset >= 0) {
+          current_file->addEvent(event);
+        }
+
       }
     }
 
     if (is_eof) break;
   }
 
-  cout << "Reading done. Minimizing.\n";
+  // cout << "Reading done.\n";
+  
   for (auto file_it = file_table.begin();
        file_it != file_table.end(); file_it++) {
     File *file = file_it->second.get();
+    // cout << "File " << file->name << endl;
     for (auto rank_seq_it = file->rank_seq.begin();
          rank_seq_it != file->rank_seq.end(); rank_seq_it++) {
+      // cout << "  rank " << rank_seq_it->first << endl;
       EventSequence *seq = rank_seq_it->second.get();
-      seq->print();
+      // seq->print();
+      // cout << "    minimizing\n";
       seq->minimize();
+      // seq->print();
     }
   }
     
@@ -285,78 +305,66 @@ void writeData(const FileTableType &file_table) {
 }
 
 
-/* Scan through the events, which are ordered by starting byte offset.
+/* Scan through the events, looking for instances where multiple ranks
+   accessed the same bytes and at least one of the accesses was a write.
 
-   Maintain a list of events, ordered by ending byte offset, with
-   no more than one per rank, that represents the ranks that have
-   accessed the current byte offset.
-   
-   If an overlapping event from the same rank is found, it is likely
-   an instance of an MPI-IO being implemented with a POSIX call.  The
-   MPI-IO call should be a superset of the POSIX call in byte range,
-   time range, and operation (write > read). If not, report the
-   unexpected situation on stderr.
+   The data is an EventSequence for each rank, which is an ordered list of
+   nonoverlapping ranges of reads or writes.  For example:
+     rank 0:  read 1..100, write 100-200, read 200-300
+     rank 1:  read 50..250
+     rank 2:  write 120-140, write 220-240, write 400-500
+
+   Loop through the bytes of the file, maintaining a set of all the ranks
+   that accessed the current range of the file. Use two priority queues to
+   track extents that are starting and ending:
+     outgoing min-heap, ordered by endOffset
+       root is the next extent to end
+     incoming min-heap, ordered by offset
+       root is the next extent to start
 */
 void scanForConflicts(File *f) {
-  // typedef set<const Event*,EventCompareEndOffset> CurrentEventsType;
-  // CurrentEventsType current_events;
-  // CurrentEventsType::iterator cur_it;
-
-  cout << "scanForConflicts(" << f->name << ")\n";
-  // std::map<int,EventSequencePtr>::iterator seq_it;
-  // std::map<int,unique_ptr<EventSequence>>::iterator it;
-  // for (it = f->rank_seq.begin(); it != f->rank_seq.end(); it++) {
-  for (auto &it : f->rank_seq) {
-    int rank = it.first;
-    EventSequence *seq = it.second.get();
-    cout << "  rank " << rank << ", "
-         << seq->elist.size() << endl;
+  cout << "\nscanForConflicts(" << f->name << ")\n";
+  if (f->name == "<STDERR>" || f->name == "<STDOUT>") {
+    cout << "  ignored\n";
+    return;
   }
-  
-  /*
-  File::EventSetType::iterator ev_it;
-  for (ev_it = f->events.begin(); ev_it != f->events.end(); ev_it++) {
-    // cout << ev_it->str() << endl;
-    const Event &e = *ev_it;
-    cout << e.str() << endl;
-  }
-  */
 
-  // Maintain a collection of events that overlap the current byte offset.
-  // vector<Event> state;
-  OverlapSet overlap_set;
-  
-  for (const Event &e : f->events) {
-    // cout << e.str() << endl;
+  RangeMerge range_merge(f->rank_seq);
 
-    // throw out events that end before the first block of event e
-    overlap_set.removeOldEvents(Event::blockStart(e.offset));
+  while (range_merge.next()) {
+    const RangeMerge::ActiveSet &active = range_merge.getActiveSet();
 
-    // if e overlaps any events and is the same rank, combine
-    // the two.
-    if (overlap_set.mergeEventsSameRank(e)) {
-      continue;
+    bool any_writes = false;
+    for (auto &it : active) {
+      if (it.second==Event::WRITE) {
+        any_writes = true;
+        break;
+      }
+    }
+
+    if (active.size() > 1 && any_writes) {
+      cout << "CONFLICT\n  " << range_merge.getRangeStart() << ".."
+           << range_merge.getRangeEnd() << ":";
+      for (auto &it : active) {
+        cout << " " << it.first << "("
+             << (it.second==Event::READ ? "read" : "write")
+             << ")";
+        
+      }
+      cout << endl;
     }
     
-    // if e overlaps any events and is a different rank, 
-    // report each overlap
-    overlap_set.reportOverlaps(e);
-
-    // if e doesn't overlap any events, but it is a write and shares a
-    // block with a write, report WAW false sharing
-    overlap_set.reportBlockOverlaps(e);
-
-    // add e to the set of active events
-    overlap_set.addEvent(e);
-    
   }
+  
 }
 
 
 
 void EventSequence::addEvent(const Event &full_event) {
-  assert(validate());
+  // assert(validate());
 
+  // if (full_event.offset < 0) return;
+  
   SeqEvent e(full_event);
 
   // std::cout << "Adding " << e.str() << std::endl;
@@ -364,7 +372,7 @@ void EventSequence::addEvent(const Event &full_event) {
   EventList::iterator overlap_it = firstOverlapping(e);
   if (overlap_it == elist.end()) {
     insert(e);
-    assert(validate());
+    // assert(validate());
     return;
   }
 
@@ -401,19 +409,25 @@ void EventSequence::addEvent(const Event &full_event) {
     }
     
     SeqEvent &next = next_it->second;
+    
+    // if there's no overlap we're done
+    if (next.startsAfter(e)) {
+      insert(e);
+      break;
+    }
+    
     assert(next.offset >= e.offset);
+    if (!(next.offset < e.endOffset())) {
+      cout << "Error !(next.offset < e.endOffset()), next=" <<
+        next.str() << ", e=" << e.str() << endl;
+    }
     assert(next.offset < e.endOffset());
 
     // e starts before next: split off the prefix of e
     if (e.offset < next.offset) {
-      
-      // if there's no overlap we're done
-      if (next.startsAfter(e)) {
-        insert(e);
-        break;
-      }
 
-      // otherwise there's overlap and e needs to be split
+      // we know next doesn't start after e, so there's an overlap
+      // and e needs to be split
       SeqEvent tmp = e.split(next.offset);
       insert(e);
 
@@ -450,7 +464,7 @@ void EventSequence::addEvent(const Event &full_event) {
     next_it++;
   }
 
-  assert(validate());
+  // assert(validate());
 }
 
 
@@ -529,19 +543,20 @@ bool EventSequence::validate() {
 
 
 void EventSequence::print() {
-  std::cout << "EventSequence " << name << std::endl;
-  for (EventList::iterator it = elist.begin(); it != elist.end(); it++) {
+  std::cout << "EventSequence " << getName() << std::endl;
+  for (EventList::const_iterator it = begin(); it != end(); it++) {
     const SeqEvent &e = it->second;
-    std::cout << "  " << e.offset << "-" << e.endOffset()
-              << " " << e.str() << std::endl;
+    /* std::cout << "  " << e.offset << "-" << e.endOffset()
+       << " " << e.str() << std::endl; */
+    std::cout << "  " << e.str() << std::endl;
   }
 }
 
 
 void EventSequence::minimize() {
-  // cout << "EventSequence::minimize()\n";
   if (elist.size() <= 1) return;
-  
+
+  assert(validate());
   EventList::iterator it = elist.begin();
 
   while (true) {
@@ -556,10 +571,10 @@ void EventSequence::minimize() {
     } else {
       it = next;
     }
-    validate();
-    // print();
   }
+  assert(validate());
 }
+
 
 static void initSequence(EventSequence &s,
                          const vector<int64_t> &bound_pairs) {
@@ -581,9 +596,9 @@ static void initSequence2(EventSequence &s,
 static void checkSequence(const EventSequence &s,
                           const vector<int64_t> &bound_pairs) {
   size_t i = 0;
-  assert(s.elist.size() == bound_pairs.size()/2);
-  EventSequence::EventList::const_iterator it = s.elist.begin();
-  while (it != s.elist.end()) {
+  assert(s.size() == bound_pairs.size()/2);
+  EventSequence::EventList::const_iterator it = s.begin();
+  while (it != s.end()) {
     assert(it->first == bound_pairs[i]
            && it->second.endOffset() == bound_pairs[i+1]);
     i += 2;
@@ -594,9 +609,9 @@ static void checkSequence(const EventSequence &s,
 static void checkSequence2(const EventSequence &s,
                            const vector<int64_t> &bound_pairs) {
   size_t i = 0;
-  assert(s.elist.size() == bound_pairs.size()/3);
-  EventSequence::EventList::const_iterator it = s.elist.begin();
-  while (it != s.elist.end()) {
+  assert(s.size() == bound_pairs.size()/3);
+  EventSequence::EventList::const_iterator it = s.begin();
+  while (it != s.end()) {
     assert(it->first == bound_pairs[i]
            && it->second.endOffset() == bound_pairs[i+1]);
     assert(it->second.mode == (Event::Mode)bound_pairs[i+2]);
@@ -752,6 +767,19 @@ void testEventSequence() {
     checkSequence(s, out2);
   }
 
+  //   |---|   |---|   |---|
+  // |---------------|
+  {
+    vector<int64_t> in {10, 30, 50, 70, 90, 110, -1, 80};
+    vector<int64_t> out {-1, 10, 10, 30, 30, 50, 50, 70, 70, 80, 90, 110};
+    initSequence(s, in);
+    checkSequence(s, out);
+    s.minimize();
+    vector<int64_t> out2 {-1, 80, 90, 110};
+    checkSequence(s, out2);
+  }
+
+  
   //   |ww|  |rr|  |ww|
   // |rrrrrrrrrrrrrrrrrr|
   //1|r|ww|rr|rr|rr|ww|r|
@@ -774,3 +802,79 @@ void testEventSequence() {
 
   cout << "OK\n";
 }
+
+
+RangeMerge::RangeMerge(File::RankSeqMap &rank_sequences) {
+  // create vector of RankSeq objects
+  for (auto &it : rank_sequences) {
+    ranks.emplace_back(it.first, it.second.get());
+  }
+
+  // add all the RankSeq objects to a priority queue
+  for (size_t i = 0; i < ranks.size(); i++)
+    incoming_queue.push(ranks.data() + i);
+
+  // initialize range to a junk value
+  range_end = range_start = INT64_MIN;
+
+  // initialize range_end to the beginning of the first incoming event,
+  // so when next() is called, that will be the first value in range_start.
+  if (!incoming_queue.empty()) {
+    range_end = incoming_queue.top()->offset();
+  }
+}
+
+
+bool RangeMerge::next() {
+  if (incoming_queue.empty() && active_set.empty())
+    return false;
+  
+  range_start = range_end;
+
+  // expire all the events that are ending
+  while (!outgoing_queue.empty() &&
+         outgoing_queue.top()->endOffset() == range_start) {
+    RankSeq *rs = outgoing_queue.top();
+    outgoing_queue.pop();
+    active_set.erase(rs->rank());
+    
+    // if this rank has more events, push it back into incoming_queue
+    if (rs->next())
+      incoming_queue.push(rs);
+  }
+
+  // all done?
+  if (incoming_queue.empty() && active_set.empty())
+    return false;
+  
+  // start all events that are starting
+  while (!incoming_queue.empty() &&
+         incoming_queue.top()->offset() == range_start) {
+    RankSeq *rs = incoming_queue.top();
+    incoming_queue.pop();
+
+    // as it's on the incoming queue, this RankSeq should not be done
+    assert(!rs->done());
+    
+    // this rank should not be currently active
+    assert(active_set.find(rs->rank()) == active_set.end());
+
+    active_set[rs->rank()] = rs->event().mode;
+    outgoing_queue.push(rs);
+  }
+
+  // find the end of this subrange, which is when the next event expires
+  // or the next one starts, whichever comes first.
+  assert(!incoming_queue.empty() || !outgoing_queue.empty());
+  if (incoming_queue.empty()) {
+    range_end = outgoing_queue.top()->endOffset();
+  } else if (outgoing_queue.empty()) {
+    range_end = incoming_queue.top()->offset();
+  } else {
+    range_end = min(outgoing_queue.top()->endOffset(),
+                    incoming_queue.top()->offset());
+  }
+
+  return true;
+}
+
