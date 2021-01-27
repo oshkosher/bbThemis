@@ -113,7 +113,6 @@ int main(int argc, char **argv) {
   for (File *f : files_by_name) {
     scanForConflicts(f);
   }
-
   
   return 0;
 }
@@ -305,6 +304,21 @@ void writeData(const FileTableType &file_table) {
 }
 
 
+string intSetToString(set<int> &s) {
+  std::ostringstream buf;
+  bool first = true;
+  for (int i : s) {
+    if (first) {
+      first = false;
+    } else {
+      buf << ",";
+    }
+    buf << i;
+  }
+  return buf.str();
+}
+  
+
 /* Scan through the events, looking for instances where multiple ranks
    accessed the same bytes and at least one of the accesses was a write.
 
@@ -323,37 +337,45 @@ void writeData(const FileTableType &file_table) {
        root is the next extent to start
 */
 void scanForConflicts(File *f) {
-  cout << "\nscanForConflicts(" << f->name << ")\n";
   if (f->name == "<STDERR>" || f->name == "<STDOUT>") {
-    cout << "  ignored\n";
+    // cout << "  ignored\n";
     return;
   }
 
+  cout << f->name << "\n";
+
   RangeMerge range_merge(f->rank_seq);
 
+  bool conflicts_found = false;
   while (range_merge.next()) {
     const RangeMerge::ActiveSet &active = range_merge.getActiveSet();
 
-    bool any_writes = false;
+    set<int> read_ranks, write_ranks;
     for (auto &it : active) {
       if (it.second==Event::WRITE) {
-        any_writes = true;
-        break;
+        write_ranks.insert(it.first);
+      } else {
+        read_ranks.insert(it.first);
       }
     }
 
-    if (active.size() > 1 && any_writes) {
-      cout << "CONFLICT\n  " << range_merge.getRangeStart() << ".."
-           << range_merge.getRangeEnd() << ":";
-      for (auto &it : active) {
-        cout << " " << it.first << "("
-             << (it.second==Event::READ ? "read" : "write")
-             << ")";
-        
+    if (active.size() > 1 && !write_ranks.empty()) {
+      conflicts_found = true;
+      cout << "  CONFLICT bytes " << range_merge.getRangeStart() << ".."
+           << (range_merge.getRangeEnd()-1) << ":";
+      if (!read_ranks.empty()) {
+        cout << " readers=" << intSetToString(read_ranks);
       }
-      cout << endl;
+
+      if (!write_ranks.empty()) {
+        cout << " writers=" << intSetToString(write_ranks);
+      }
+      cout << "\n";
     }
-    
+  }
+
+  if (!conflicts_found) {
+    cout << "  no conflicts\n";
   }
   
 }
