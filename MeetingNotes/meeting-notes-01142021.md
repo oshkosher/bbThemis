@@ -1,4 +1,4 @@
-#Jan 17th, 2020
+#Jan 14th, 2020
 
 ### Progress
 Zhao, Ed (4 hours behind), and Ishank (10 hours ahead: discuss consistency, and convert strace to DXT similar format
