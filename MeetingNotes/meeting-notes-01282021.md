@@ -8,7 +8,8 @@
 
 - Theme: To enable intra-io-node burst buffer sharing, incorporatings the consistency models
 
-- Experiments, on large scale, application suite, everybody
+- Experiments, on large scale, application suite
+	- Baseline: Intel DAOS, reference implementation of existing work, multi- vs. single-node burst buffer
 
 - Comments.
 	- Dan: some apps may be slowed, local optimization vs. global optimizaiton. tradeoff study.
