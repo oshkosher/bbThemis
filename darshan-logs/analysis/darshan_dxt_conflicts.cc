@@ -47,17 +47,6 @@
 
 */
 
-#include <cstdlib>
-#include <cstdio>
-#include <cassert>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <vector>
-#include <unordered_map>
-#include <memory>
-#include <regex>
-
 #include "darshan_dxt_conflicts.hh"
 
 using namespace std;
@@ -71,17 +60,21 @@ int Event::block_size = 1;
 // often truncated in Darshan, leading to collisions that would probably
 // be avoided when using the 64-bit hash of the full path.
 // typedef unordered_map<std::string, unique_ptr<File>> FileTableType;
-typedef map<std::string, unique_ptr<File>> FileTableType;
+using FileTableType = map<std::string, unique_ptr<File>>;
 
+void printHelp();
+// save_all_events: keep a copy of all events
 int readDarshanDxtInput(istream &in, FileTableType &file_table,
-                        LineReader &line_reader);
+                        LineReader &line_reader, bool output_per_rank_summary,
+                        bool save_all_events);
 bool parseEventLine(Event &e, const string &line);
-void writeData(const FileTableType &file_table);
-void scanForConflicts(File *f);
+void scanForConflicts(File *f, bool output_conflict_details);
+void outputConflictDetails(File *f, int64_t offset, int64_t offset_end);
 void testEventSequence();
 
 
-int main(int argc, char **argv) {
+int main(int argc, const char **argv) {
+  Options opt;
   FileTableType file_table;
 
 #if TESTING
@@ -90,15 +83,32 @@ int main(int argc, char **argv) {
   return 0;
 #endif
 
-  if (argc == 1) {
-    cerr << "\n  darshan_dxt_conflicts <input_dxt_file> [...]\n\n";
-    exit(1);
-  }
+  if (!opt.parseArgs(argc, argv))
+    printHelp();
 
+  cout << "output_per_rank_summary=" << opt.output_per_rank_summary
+       << " output_conflict_details=" << opt.output_conflict_details << "\n";
+  
   LineReader line_reader(5000);
-  for (int argno=1; argno < argc; argno++) {
-    ifstream inf(argv[argno]);
-    readDarshanDxtInput(inf, file_table, line_reader);
+  bool stdin_seen = false;
+  for (string &filename : opt.input_files) {
+    istream *inf;
+    if (filename == "-") {
+      if (stdin_seen) continue;
+      inf = &cin;
+      stdin_seen = true;
+    } else {
+      inf = new ifstream(filename);
+      if (!inf->good()) {
+        cerr << "Failed to open \"" << filename << "\"\n";
+        delete inf;
+        continue;
+      }
+    }
+    readDarshanDxtInput(*inf, file_table, line_reader,
+                        opt.output_per_rank_summary,
+                        opt.output_conflict_details);
+    if (inf != &cin) delete inf;
   }
   line_reader.done();
 
@@ -111,15 +121,34 @@ int main(int argc, char **argv) {
        [](File *a, File *b) {return a->name < b->name;});
   
   for (File *f : files_by_name) {
-    scanForConflicts(f);
+    scanForConflicts(f, opt.output_conflict_details);
   }
   
   return 0;
 }
 
 
+void printHelp() {
+  cerr << "\n"
+    "  darshan_dxt_conflicts [options] <dxt_file> ...\n"
+    "  Parse DxT output from darshan-parser and report any IO conflicts.\n"
+    "  An IO conflict is when one process writes a byte of a file, and\n"
+    "  another process reads or writes the same byte.\n"
+    "  If <dxt_file> is \"-\", it will be read from STDIN.\n"
+    "\n"
+    "  options:\n"
+    "  -summary : Before scanning for conflicts, output a per-file summary\n"
+    "     of the ranges of bytes read or written by each process.\n"
+    "  -audit : For each reported conflict, output the full details of each IO event\n"
+    "     leading to that conflict.\n"
+    "\n";
+  exit(1);
+}
+
+
 int readDarshanDxtInput(istream &in, FileTableType &file_table,
-                        LineReader &line_reader) {
+                        LineReader &line_reader, bool output_per_rank_summary,
+                        bool save_all_events) {
   string line;
 
   regex section_header_re("^# DXT, file_id: ([0-9]+), file_name: (.*)$");
@@ -148,7 +177,7 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table,
     FileTableType::iterator ftt_iter = file_table.find(file_id_str);
     if (ftt_iter == file_table.end()) {
       // cout << "First instance of " << file_name << endl;
-      current_file = new File(file_id_str, file_name);
+      current_file = new File(file_id_str, file_name, save_all_events);
       file_table[file_id_str] = unique_ptr<File>(current_file);
     } else {
       current_file = ftt_iter->second.get();
@@ -201,15 +230,27 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table,
   for (auto file_it = file_table.begin();
        file_it != file_table.end(); file_it++) {
     File *file = file_it->second.get();
-    // cout << "File " << file->name << endl;
+
+    if (output_per_rank_summary) {
+      cout << "File " << file->name << "\n";
+    }
+    
     for (auto rank_seq_it = file->rank_seq.begin();
          rank_seq_it != file->rank_seq.end(); rank_seq_it++) {
       // cout << "  rank " << rank_seq_it->first << endl;
-      EventSequence *seq = rank_seq_it->second.get();
+      // EventSequence *seq = rank_seq_it->second.get();
+      EventSequence &seq = rank_seq_it->second;
       // seq->print();
       // cout << "    minimizing\n";
-      seq->minimize();
-      // seq->print();
+      seq.minimize();
+      seq.sortAllEvents();
+
+      if (output_per_rank_summary &&
+          file->name != "<STDOUT>" &&
+          file->name != "<STDERR>") {
+        seq.print();
+      }
+        
     }
   }
     
@@ -285,23 +326,6 @@ bool parseEventLine(Event &event, const string &line) {
 }
 
 
-void writeData(const FileTableType &file_table) {
-
-  for (auto &file_it : file_table) {
-    File *f = file_it.second.get();
-    cout << "File " << f->name << endl;
-    for (auto &event_it : f->events) {
-      cout << event_it.str() << endl;
-    }
-  }
-  /*
-  for (FileTableType::const_iterator it=file_table.begin();
-       it != file_table.end(); it++) {
-    const File *f = it->second.get();
-    cout << "File " << f->name << endl;
-  }
-  */
-}
 
 
 string intSetToString(set<int> &s) {
@@ -336,7 +360,7 @@ string intSetToString(set<int> &s) {
      incoming min-heap, ordered by offset
        root is the next extent to start
 */
-void scanForConflicts(File *f) {
+void scanForConflicts(File *f, bool output_conflict_details) {
   if (f->name == "<STDERR>" || f->name == "<STDOUT>") {
     // cout << "  ignored\n";
     return;
@@ -350,12 +374,14 @@ void scanForConflicts(File *f) {
   while (range_merge.next()) {
     const RangeMerge::ActiveSet &active = range_merge.getActiveSet();
 
-    set<int> read_ranks, write_ranks;
+    set<int> read_ranks, write_ranks, rw_ranks;
     for (auto &it : active) {
       if (it.second==Event::WRITE) {
         write_ranks.insert(it.first);
-      } else {
+      } else if (it.second==Event::READ) {
         read_ranks.insert(it.first);
+      } else {
+        rw_ranks.insert(it.first);
       }
     }
 
@@ -364,13 +390,22 @@ void scanForConflicts(File *f) {
       cout << "  CONFLICT bytes " << range_merge.getRangeStart() << ".."
            << (range_merge.getRangeEnd()-1) << ":";
       if (!read_ranks.empty()) {
-        cout << " readers=" << intSetToString(read_ranks);
+        cout << " read ranks={" << intSetToString(read_ranks) << "}";
       }
 
       if (!write_ranks.empty()) {
-        cout << " writers=" << intSetToString(write_ranks);
+        cout << " write ranks={" << intSetToString(write_ranks) << "}";
+      }
+
+      if (!rw_ranks.empty()) {
+        cout << " read/write ranks={" << intSetToString(rw_ranks) << "}";
       }
       cout << "\n";
+
+      if (output_conflict_details) {
+        outputConflictDetails(f, range_merge.getRangeStart(),
+                              range_merge.getRangeEnd());
+      }
     }
   }
 
@@ -381,15 +416,69 @@ void scanForConflicts(File *f) {
 }
 
 
+void outputConflictDetails(File *f, int64_t offset, int64_t offset_end) {
+  vector<Event> matches;
+  for (auto &v : f->rank_seq) {
+    // cout << "rank " << v.first << "\n";
+    EventSequence &es = v.second;
+    for (auto e = es.allBegin(); e != es.allEnd(); e++) {
+      if (e->offset < offset_end && e->endOffset() > offset) {
+        matches.push_back(*e);
+      }
+    }
+  }
+
+  sort(matches.begin(), matches.end(), events_order_by_start_time);
+
+  for (auto &e : matches) {
+    int64_t overlap_len = min(offset_end, e.endOffset())
+      - max(offset, e.offset);
+    cout << "  time " << fixed << setprecision(4) << e.start_time
+         << "-" << e.end_time
+         << " rank " << e.rank
+         << " " << (e.api == Event::POSIX ? "POSIX " : "MPI-IO")
+         << " " << (e.mode == Event::READ ? "read " : "write")
+         << " bytes "
+         << e.offset << ".." << (e.endOffset()-1)
+         << " (conflict overlap " << overlap_len << " bytes)\n";
+  }
+}
+    
+
+bool Options::parseArgs(int argc, const char **argv) {
+  if (argc <= 1) return false;
+
+  int argno = 1;
+  while (argno < argc) {
+    const char *arg = argv[argno];
+    if (!strcmp(arg, "-summary")) {
+      output_per_rank_summary = true;
+      argno++;
+    } else if (!strcmp(arg, "-audit")) {
+      output_conflict_details = true;
+      argno++;
+    } else if (arg[0] == '-' && strlen(arg) > 1) {
+      return false;
+    } else {
+      break;
+    }
+  }
+
+  // add remaining args to input_files
+  input_files.insert(input_files.begin(), argv+argno, argv+argc);
+  
+  return true;
+}
+
 
 void EventSequence::addEvent(const Event &full_event) {
   // assert(validate());
 
-  // if (full_event.offset < 0) return;
-  
-  SeqEvent e(full_event);
+  if (save_all_events) {
+    all_events.push_back(full_event);
+  }
 
-  // std::cout << "Adding " << e.str() << std::endl;
+  SeqEvent e(full_event);
 
   EventList::iterator overlap_it = firstOverlapping(e);
   if (overlap_it == elist.end()) {
@@ -565,12 +654,13 @@ bool EventSequence::validate() {
 
 
 void EventSequence::print() {
-  std::cout << "EventSequence " << getName() << std::endl;
+  // std::cout << "EventSequence " << getName() << std::endl;
+  std::cout << "  " << getName() << "\n";
   for (EventList::const_iterator it = begin(); it != end(); it++) {
     const SeqEvent &e = it->second;
     /* std::cout << "  " << e.offset << "-" << e.endOffset()
        << " " << e.str() << std::endl; */
-    std::cout << "  " << e.str() << std::endl;
+    std::cout << "    " << e.str() << std::endl;
   }
 }
 
@@ -645,7 +735,7 @@ static void checkSequence2(const EventSequence &s,
 
 
 void testEventSequence() {
-  EventSequence s;
+  EventSequence s("", false);
   EventSequence::EventList::iterator it;
 
   // |rrrrrr|
@@ -829,7 +919,7 @@ void testEventSequence() {
 RangeMerge::RangeMerge(File::RankSeqMap &rank_sequences) {
   // create vector of RankSeq objects
   for (auto &it : rank_sequences) {
-    ranks.emplace_back(it.first, it.second.get());
+    ranks.emplace_back(it.first, it.second);
   }
 
   // add all the RankSeq objects to a priority queue
