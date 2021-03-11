@@ -1,6 +1,6 @@
 #Jan 28th, 2020
 
-### SC21 Paper Plannning
+### SC21 Paper Planning
 
 - System prototype, Lei
 
