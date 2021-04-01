@@ -21,6 +21,6 @@
       - IOR-32 and IOR-16
       - IOR-32 and IOR-8
       - IOR-32 and IOR-4
-      - NAMD-64 and ResNet-4
-      - WRF-4, NAMD-64, specfem3D-16, Montage-1, ResNet-4, BERT-4
+      - NAMD-64 and ResNet-16
+      - WRF-4, NAMD-64, specfem3D-16, Montage-1, ResNet-16, BERT-4
       - How to test the limitation of sharing? How many jobs can run at the same time without perf loss?
