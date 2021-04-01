@@ -7,7 +7,6 @@
     - WRF, NAMD, specfem3D, Montage, ResNet, BERT
     
   - Lustre
-    - IOR, mdtest
     - apps: WRF, NAMD, specfem3D, Montage, ResNet, BERT
     - sharing: NAMD-64 and ResNet-4
 
