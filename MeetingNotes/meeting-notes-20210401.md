@@ -8,7 +8,7 @@
     
   - Lustre
     - apps: WRF, NAMD, specfem3D, Montage, ResNet, BERT
-    - sharing: NAMD-64 and ResNet-4
+    - sharing: NAMD-64 and ResNet-16
 
   - DAOS
     - IOR, mdtest
