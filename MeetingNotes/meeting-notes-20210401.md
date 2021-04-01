@@ -3,6 +3,9 @@
 ### SC21 Paper Discussion
 
 - Experiment Design
+  - app I/O visualization:
+    - WRF, NAMD, specfem3D, Montage, ResNet, BERT
+    
   - Lustre
     - IOR, mdtest
     - apps: WRF, NAMD, specfem3D, Montage, ResNet, BERT
