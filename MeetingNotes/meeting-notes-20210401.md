@@ -4,13 +4,17 @@
 
 - Experiment Design
   - app I/O visualization:
+
     [ ] WRF, NAMD, specfem3D, Montage, ResNet, BERT
     
   - Lustre
+
     [ ] apps: WRF, NAMD, specfem3D, Montage, ResNet, BERT
+    
     - sharing: NAMD-64 and ResNet-16
 
   - DAOS
+    
     [ ] IOR, mdtest
 
   - bbThemis
