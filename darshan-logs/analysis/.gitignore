@@ -1,3 +1,8 @@
 *~
 darshan_dxt_conflicts
 darshan_dxt_conflicts.exe
+*.strace
+*.log
+*.out
+*.gz
+*.zst
