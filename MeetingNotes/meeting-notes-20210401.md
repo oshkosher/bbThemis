@@ -4,7 +4,7 @@
 
 - Experiment Design
   - app I/O visualization:
-    - WRF, NAMD, specfem3D, Montage, ResNet, BERT
+    [ ] WRF, NAMD, specfem3D, Montage, ResNet, BERT
     
   - Lustre
     [ ] apps: WRF, NAMD, specfem3D, Montage, ResNet, BERT
