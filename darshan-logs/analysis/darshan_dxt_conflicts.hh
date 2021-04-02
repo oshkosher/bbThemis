@@ -547,4 +547,8 @@ public:
 };
 
 
+// split a line by tab characters
+void splitTabString(std::vector<std::string> &fields, const std::string &line);
+
+
 #endif // DARSHAN_DXT_CONFLICTS_HH
