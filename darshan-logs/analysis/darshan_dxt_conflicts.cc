@@ -54,6 +54,9 @@ using namespace std;
 
 int Event::block_size = 1;
 
+string DARSHAN_HEADER = "# darshan log";
+string STRACE_HEADER = "# strace io log";
+
 
 // map file_id (the hash of the file path) to File object.
 // Use the hash rather than the path, because the path is
@@ -63,11 +66,17 @@ int Event::block_size = 1;
 using FileTableType = map<std::string, unique_ptr<File>>;
 
 void printHelp();
+
 // save_all_events: keep a copy of all events
 int readDarshanDxtInput(istream &in, FileTableType &file_table,
                         LineReader &line_reader, bool output_per_rank_summary,
                         bool save_all_events);
 bool parseEventLine(Event &e, const string &line);
+int readStraceInput(istream &in, FileTableType &file_table,
+                    LineReader &line_reader, const string &input_filename,
+                    bool save_all_events);
+void processEventSequences(FileTableType &file_table,
+                           bool output_per_rank_summary);
 void scanForConflicts(File *f, bool output_conflict_details);
 void outputConflictDetails(File *f, int64_t offset, int64_t offset_end);
 void testEventSequence();
@@ -86,9 +95,6 @@ int main(int argc, const char **argv) {
   if (!opt.parseArgs(argc, argv))
     printHelp();
 
-  cout << "output_per_rank_summary=" << opt.output_per_rank_summary
-       << " output_conflict_details=" << opt.output_conflict_details << "\n";
-  
   LineReader line_reader(5000);
   bool stdin_seen = false;
   for (string &filename : opt.input_files) {
@@ -105,12 +111,30 @@ int main(int argc, const char **argv) {
         continue;
       }
     }
-    readDarshanDxtInput(*inf, file_table, line_reader,
-                        opt.output_per_rank_summary,
-                        opt.output_conflict_details);
+    
+    string header_line;
+    if (!line_reader.getline(*inf, header_line)) {
+      fprintf(stderr, "Empty file: %s\n", filename.c_str());
+      continue;
+    }
+
+    if (!header_line.compare(0, DARSHAN_HEADER.length(), DARSHAN_HEADER)) {
+      readDarshanDxtInput(*inf, file_table, line_reader,
+                          opt.output_per_rank_summary,
+                          opt.output_conflict_details);
+    } else if (!header_line.compare(0, STRACE_HEADER.length(), STRACE_HEADER)) {
+      readStraceInput(*inf, file_table, line_reader, filename,
+                      opt.output_conflict_details);
+    } else {
+      fprintf(stderr, "Unrecognized file type %s, header=%s\n",
+              filename.c_str(), header_line.c_str());
+    }
+    
     if (inf != &cin) delete inf;
   }
   line_reader.done();
+
+  processEventSequences(file_table, opt.output_per_rank_summary);
 
   // scan files in name order
   vector<File*> files_by_name;
@@ -226,46 +250,9 @@ int readDarshanDxtInput(istream &in, FileTableType &file_table,
   }
 
   // cout << "Reading done.\n";
-  
-  for (auto file_it = file_table.begin();
-       file_it != file_table.end(); file_it++) {
-    File *file = file_it->second.get();
-
-    if (output_per_rank_summary) {
-      cout << "File " << file->name << "\n";
-    }
-    
-    for (auto rank_seq_it = file->rank_seq.begin();
-         rank_seq_it != file->rank_seq.end(); rank_seq_it++) {
-      // cout << "  rank " << rank_seq_it->first << endl;
-      // EventSequence *seq = rank_seq_it->second.get();
-      EventSequence &seq = rank_seq_it->second;
-      // seq->print();
-      // cout << "    minimizing\n";
-      seq.minimize();
-      seq.sortAllEvents();
-
-      if (output_per_rank_summary &&
-          file->name != "<STDOUT>" &&
-          file->name != "<STDERR>") {
-        seq.print();
-      }
-        
-    }
-  }
-    
 
   return 0;
 }
-
-
-/*
-bool startsWith(const string &s, const char *search_str) {
-  size_t search_len = strlen(search_str);
-  return s.length() >= search_len
-    && 0 == s.compare(0, search_len, search_str);
-}
-*/
 
 
 /* 
@@ -326,6 +313,148 @@ bool parseEventLine(Event &event, const string &line) {
 }
 
 
+/*
+  strace2dxt file format
+  
+  First line: "# strace io log"
+  Remaining lines are tab-delimited.
+    <pid> open <fd> <file_name>
+    <pid> read|write <offset> <length> <ts> <fd>
+
+  pid: process id
+  fd: file descriptor (an integer)
+  time: timestamp in seconds
+*/
+int readStraceInput(istream &in, FileTableType &file_table,
+                    LineReader &line_reader, const string &input_filename,
+                    bool save_all_events) {
+  string line;
+  using OpenFileMap = unordered_map<int,File*>;
+  OpenFileMap open_files;
+  vector<string> fields;
+  long line_no = 1;  // already read header line
+  Event event;
+
+  while (line_reader.getline(in, line)) {
+    line_no++;
+    splitTabString(fields, line);
+
+    long pid = std::stol(fields[0]);
+    const string &fn_name = fields[1];
+
+    if (fn_name == "open") {
+      if (fields.size() != 4) {
+        fprintf(stderr, "ERROR %s:%ld expected 4 fields: \"%s\"\n",
+                input_filename.c_str(), line_no, line.c_str());
+        continue;
+      }
+      int fd = std::stoi(fields[2]);
+      const string &filename = fields[3];
+
+      // create a new entry in file_table if this is a new filename
+      File *f;
+      FileTableType::iterator ftt_iter = file_table.find(filename);
+      if (ftt_iter == file_table.end()) {
+        // cout << "First instance of " << file_name << endl;
+        f = new File(filename, filename, save_all_events);
+        file_table[filename] = unique_ptr<File>(f);
+      } else {
+        f = ftt_iter->second.get();
+      }
+
+      open_files[fd] = f;
+    }
+
+    else if (fn_name == "read" || fn_name == "pread64" || fn_name == "write") {
+      if (fields.size() != 6) {
+        fprintf(stderr, "ERROR %s:%ld expected 6 fields: \"%s\"\n",
+                input_filename.c_str(), line_no, line.c_str());
+        continue;
+      }
+      long offset = std::stol(fields[2]);
+      long len = std::stol(fields[3]);
+      double timestamp = std::stod(fields[4]);
+      int fd = std::stoi(fields[5]);
+      Event::Mode mode = fn_name[0] == 'w' ? Event::WRITE : Event::READ;
+
+      Event event(pid, mode, Event::POSIX, offset, len, timestamp, timestamp);
+      
+      auto open_it = open_files.find(fd);
+      if (open_it == open_files.end()) {
+        fprintf(stderr, "ERROR %s:%ld read of unknown file descriptor: \"%s\"\n",
+                input_filename.c_str(), line_no, line.c_str());
+        continue;
+      }
+
+      // map fd to File
+      File *f = open_it->second;
+      assert(f);
+      f->addEvent(event);
+    }
+
+    else {
+      fprintf(stderr, "ERROR %s:%ld unrecognized input: \"%s\"\n",
+              input_filename.c_str(), line_no, line.c_str());
+    }
+  }
+  
+  return 0;
+}
+
+
+void processEventSequences(FileTableType &file_table,
+                           bool output_per_rank_summary) {
+  for (auto file_it = file_table.begin();
+       file_it != file_table.end(); file_it++) {
+    File *file = file_it->second.get();
+
+    if (output_per_rank_summary) {
+      cout << "File " << file->name << "\n";
+    }
+    
+    for (auto rank_seq_it = file->rank_seq.begin();
+         rank_seq_it != file->rank_seq.end(); rank_seq_it++) {
+      // cout << "  rank " << rank_seq_it->first << endl;
+      // EventSequence *seq = rank_seq_it->second.get();
+      EventSequence &seq = rank_seq_it->second;
+      // seq->print();
+      // cout << "    minimizing\n";
+      seq.minimize();
+      seq.sortAllEvents();
+
+      if (output_per_rank_summary &&
+          file->name != "<STDOUT>" &&
+          file->name != "<STDERR>") {
+        seq.print();
+      }
+        
+    }
+  }
+}  
+
+
+// split a line by tab characters
+void splitTabString(std::vector<std::string> &fields, const std::string &line) {
+  size_t pos = 0, field_no = 0;
+  while (true) {
+    size_t next_tab = line.find('\t', pos);
+    size_t len = (next_tab == string::npos)
+      ? line.length() - pos
+      : next_tab - pos;
+
+    // To avoid reallocations, replace the string rather than assign from
+    // a substring.
+    if (fields.size() < field_no+1)
+      fields.resize(field_no+1, "");
+    fields[field_no].replace(0, fields[field_no].length(), line, pos, len);
+
+    if (next_tab == string::npos) break;
+
+    pos = next_tab + 1;
+    field_no++;
+  }
+  fields.resize(field_no+1);
+}
 
 
 string intSetToString(set<int> &s) {

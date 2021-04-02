@@ -21,6 +21,9 @@
 #include <vector>
 
 
+// split a line by tab characters
+void splitTabString(std::vector<std::string> &fields, const std::string &line);
+
 
 struct Options {
   bool output_per_rank_summary;
