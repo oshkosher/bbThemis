@@ -312,6 +312,17 @@ bool parseEventLine(Event &event, const string &line) {
   return true;
 }
 
+/*
+void createEntryForStandardStream
+(const string &name, int fd,
+ FileTableType &file_table, unordered_map<int,File*> &open_files) {
+ 
+  File *f;
+  f = new File(name, name, false);
+  file_table[name] = unique_ptr<File>(f);
+  open_files[fd] = f;
+}
+*/
 
 /*
   strace2dxt file format
@@ -319,6 +330,7 @@ bool parseEventLine(Event &event, const string &line) {
   First line: "# strace io log"
   Remaining lines are tab-delimited.
     <pid> open <fd> <file_name>
+    <pid> open <fd> <file_name> 1   # for files opened with O_APPEND
     <pid> read|write <offset> <length> <ts> <fd>
 
   pid: process id
@@ -329,7 +341,6 @@ int readStraceInput(istream &in, FileTableType &file_table,
                     LineReader &line_reader, const string &input_filename,
                     bool save_all_events) {
   string line;
-  using OpenFileMap = unordered_map<int,File*>;
   OpenFileMap open_files;
   vector<string> fields;
   long line_no = 1;  // already read header line
@@ -339,12 +350,14 @@ int readStraceInput(istream &in, FileTableType &file_table,
     line_no++;
     splitTabString(fields, line);
 
-    long pid = std::stol(fields[0]);
+    int pid = std::stoi(fields[0]);
     const string &fn_name = fields[1];
 
-    if (fn_name == "open") {
-      if (fields.size() != 4) {
-        fprintf(stderr, "ERROR %s:%ld expected 4 fields: \"%s\"\n",
+    if (fn_name == "open" or fn_name == "openat") {
+      if (fields.size() < 4
+          || fields.size() > 5
+          || (fields.size() == 5 && fields[4] != "1")) {
+        fprintf(stderr, "ERROR %s:%ld unexpected 'open' file format: \"%s\"\n",
                 input_filename.c_str(), line_no, line.c_str());
         continue;
       }
@@ -362,7 +375,7 @@ int readStraceInput(istream &in, FileTableType &file_table,
         f = ftt_iter->second.get();
       }
 
-      open_files[fd] = f;
+      open_files[{pid,fd}] = f;
     }
 
     else if (fn_name == "read" || fn_name == "pread64" || fn_name == "write") {
@@ -377,18 +390,42 @@ int readStraceInput(istream &in, FileTableType &file_table,
       int fd = std::stoi(fields[5]);
       Event::Mode mode = fn_name[0] == 'w' ? Event::WRITE : Event::READ;
 
-      Event event(pid, mode, Event::POSIX, offset, len, timestamp, timestamp);
+      // ignore 0-byte accesses
+      if (len <= 0) continue;
       
-      auto open_it = open_files.find(fd);
-      if (open_it == open_files.end()) {
-        fprintf(stderr, "ERROR %s:%ld read of unknown file descriptor: \"%s\"\n",
-                input_filename.c_str(), line_no, line.c_str());
-        continue;
-      }
+      Event event(pid, mode, Event::POSIX, offset, len, timestamp, timestamp);
 
       // map fd to File
-      File *f = open_it->second;
-      assert(f);
+      File *f;
+      auto open_it = open_files.find({pid,fd});
+      if (open_it != open_files.end()) {
+        f = open_it->second;
+        assert(f);
+      } else {
+
+        // is it a standard io stream?
+        if (fd >= 0 && fd <= 2) {
+          const char *name =
+            fd==0 ? "<STDIN>" : fd==1 ? "<STDOUT>" : "<STDERR>";
+
+          auto file_table_entry = file_table.find(name);
+          if (file_table_entry == file_table.end()) {
+            f = new File(name, name, false);
+            file_table[name] = unique_ptr<File>(f);
+          } else {
+            f = file_table_entry->second.get();
+          }
+          open_files[{pid,fd}] = f;
+        }
+
+        else {
+          fprintf(stderr, "ERROR %s:%ld read of unknown file descriptor: "
+                  "\"%s\"\n",
+                  input_filename.c_str(), line_no, line.c_str());
+          continue;
+        }
+      }
+      
       f->addEvent(event);
     }
 
@@ -743,6 +780,10 @@ EventSequence::EventList::iterator EventSequence::firstOverlapping
     return elist.end();
   }
 
+  if (!evt.overlaps(next->second)) {
+    cerr << "overlap logic error:\n  " << evt.str() << "\n  "
+         << next->second.str() << "\n";
+  }
   assert(evt.overlaps(next->second));
   return next;
 }

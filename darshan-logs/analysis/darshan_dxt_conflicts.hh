@@ -531,4 +531,8 @@ public:
 };
 
 
+// map (pid,fd) to a file currently open on that processes
+using OpenFileMap = std::map< std::pair<int,int> , File*>;
+
+
 #endif // DARSHAN_DXT_CONFLICTS_HH
