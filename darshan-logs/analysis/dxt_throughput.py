@@ -22,7 +22,7 @@ HELP_STR = f"""
   dxt_throughput.py [opt]
     Read from stdin either Darshan DXT or the output of strace_to_dxt.py.
     Output the IO throughput over time in the following tab-delimited format:
-    <timestamp> <read_bytes> <read_bps> <write_bytes> <write_bps>
+    <timestamp> <read_bytes> <read_bps> <read_count> <reads/sec> <write_bytes> <write_bps> <write_count> <writes/sec>
       [bps=bytes per second]
     Data is grouped into fixed-size time spans, like a histogram.
   opt:
@@ -85,17 +85,23 @@ def main(args):
   writes_pos = 0
   # bins = []
 
-  print('# bin_start_time\tread_bytes\tread_bytes_per_sec\twrite_bytes\twrite_bytes_per_sec')
+  print('# bin_start_time\tread_bytes\tread_bytes_per_sec\tread_count\treads_per_sec\twrite_bytes\twrite_bytes_per_sec\twrite_count\twrites_per_sec')
   
   for bin_no in range(bin_count):
     bin_start_time = start_time + bin_size * bin_no
     bin_end_time = end_time if bin_no == bin_count-1 else start_time + bin_size * (bin_no+1)
     # print(f'bin_no {bin_no} {bin_start_time} .. {bin_end_time}')
-    (read_bytes, reads_pos) = sumIO(reads, reads_pos, bin_end_time)
-    (write_bytes, writes_pos) = sumIO(writes, writes_pos, bin_end_time)
+    (read_bytes, reads_next_pos) = sumIO(reads, reads_pos, bin_end_time)
+    (write_bytes, writes_next_pos) = sumIO(writes, writes_pos, bin_end_time)
     # bins.append( (bin_start_time, read_bytes, write_bytes) )
 
-    print(f'{bin_start_time-start_time:.6f}\t{read_bytes}\t{read_bytes/bin_size:.0f}\t{write_bytes}\t{write_bytes/bin_size:.0f}')
+    time_midpoint = bin_start_time - start_time + bin_size/2
+    read_count = reads_next_pos - reads_pos
+    reads_pos = reads_next_pos
+    write_count = writes_next_pos - writes_pos
+    writes_pos = writes_next_pos
+
+    print(f'{time_midpoint:.6f}\t{read_bytes}\t{read_bytes/bin_size:.0f}\t{read_count}\t{read_count/bin_size:.2f}\t{write_bytes}\t{write_bytes/bin_size:.0f}\t{write_count}\t{write_count/bin_size:.2f}')
 
 
 def commafy(n):
